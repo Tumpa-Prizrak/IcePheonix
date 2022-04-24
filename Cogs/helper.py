@@ -4,15 +4,14 @@ from math import ceil
 
 json_data = json.load(open("settings.json"))
 
-def create_log(mess: str, code: str = "ok"):
-    file = open("log.txt", "a")
-        
-    out = f"[{code}][{datetime.datetime.now()}]: {mess}"
-        
+def create_log(message: str, code: str = "ok"):
+    file = open(f"logs/log_{datetime.date.today()}.txt", "a", encoding="UTF-8")
+    
+    out = f"[{code}][{datetime.datetime.now()}]: {message}"
+    
     print(out)
     
     file.write(out + "\n")
-
     file.close()
 
 def do_to_database(command: str, *options):
@@ -38,17 +37,4 @@ def do_to_database(command: str, *options):
             continue
 
 def EmbedFixer(emb: nextcord.Embed):
-    print(len(emb))
-    if len(emb) > 1024:
-        print([emb[i:i+1024] for i in range(0, (ceil(len(emb) / 1024)), 1024)])
-
-"""
-if len(emb) > 1024:
-    for i in range (len(emb) // 1024):
-        
-
-str[:1024]
-
-chunks = [emb[i:i+1024] for i in range(0, len(emb), 1024)]
-
-"""
+    print([emb[i:i+1024] for i in range(0, len(emb), 1024)])
