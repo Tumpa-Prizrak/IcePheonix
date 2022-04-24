@@ -1,5 +1,6 @@
-import sqlite3, datetime, json
+import sqlite3, datetime, json, nextcord
 from time import sleep
+from math import ceil
 
 json_data = json.load(open("settings.json"))
 
@@ -35,3 +36,19 @@ def do_to_database(command: str, *options):
             create_log(e, code="error")
             sleep(1)
             continue
+
+def EmbedFixer(emb: nextcord.Embed):
+    print(len(emb))
+    if len(emb) > 1024:
+        print([emb[i:i+1024] for i in range(0, (ceil(len(emb) / 1024)), 1024)])
+
+"""
+if len(emb) > 1024:
+    for i in range (len(emb) // 1024):
+        
+
+str[:1024]
+
+chunks = [emb[i:i+1024] for i in range(0, len(emb), 1024)]
+
+"""
