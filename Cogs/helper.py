@@ -37,4 +37,4 @@ def do_to_database(command: str, *options):
             continue
 
 def EmbedFixer(emb: nextcord.Embed):
-    print([emb[i:i+1024] for i in range(0, len(emb), 1024)])
+    return ([emb[i:i+1024] for i in range(0, len(emb), 1024)])
