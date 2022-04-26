@@ -8,7 +8,7 @@ class NewCog(commands.Cog):
         self.bot = bot
     
     @nextcord.slash_command(name="add_Voice")
-    async def add_voice(self, interaction: nextcord.Interaction, channel_id: int = nextcord.SlashOption(name="Channel_id", description="Enter the channel ID witch be used to create a new voice")):
+    async def add_voice(self, interaction: nextcord.Interaction, channel_id: int = nextcord.SlashOption(name="Channel_id", description="Enter the channel name wich will be used to create a new voice сhannel")):
         g = self.bot.get_channel(channel_id)
         if g == None or type(g) != VoiceChannel:
             return await interaction.send("Incorrect channel id")
@@ -16,7 +16,7 @@ class NewCog(commands.Cog):
         await interaction.send(":thumbsup:")
     
     @nextcord.slash_command(name="remove_Voice")
-    async def remove_voice(self, interaction: nextcord.Interaction, channel_id: int = nextcord.SlashOption(name="Channel_id", description="Enter the channel ID witch be used to create a new voice")):
+    async def remove_voice(self, interaction: nextcord.Interaction, channel_id: int = nextcord.SlashOption(name="Channel_id", description="Enter the channel name wich will be used to create a new voice сhannel")):
         g = self.bot.get_channel(channel_id)
         if g == None or type(g) != VoiceChannel:
             return await interaction.send("Incorrect channel id")

@@ -1,6 +1,5 @@
 import sqlite3, datetime, json, nextcord
 from time import sleep
-from math import ceil
 
 json_data = json.load(open("settings.json"))
 
@@ -36,5 +35,5 @@ def do_to_database(command: str, *options):
             sleep(1)
             continue
 
-def EmbedFixer(emb: nextcord.Embed):
-    return ([emb[i:i+1024] for i in range(0, len(emb), 1024)])
+def fix_long_embed(description):
+    return ([description[i:i+1024] for i in range(0, len(description), 1024)])
