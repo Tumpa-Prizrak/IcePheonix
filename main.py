@@ -12,11 +12,10 @@ async def on_ready():
         if i.startswith("C_") and i.endswith(".py"):
             try:
                 bot.load_extension("Cogs." + i[:-3])
-                h.create_log(f"Cog Cogs.{i[:-3]} loaded")
+                h.create_log(f"Cog {i[3:-3]} loaded", "cogs")
             except Exception as e:
-                h.create_log(f"Cog Cogs.{i[:-3]} failed to load due to error {e}")
+                h.create_log(f"Cog {i[3:-3]} failed to load due to error {e}", "cogs")
                 
-    await bot.register_new_application_commands()
     await bot.register_application_commands(c_ping, test)
     h.create_log("Bot is ready!", "ready")
 
@@ -25,9 +24,10 @@ async def reload_extension(ctx: nextcord.Interaction, extension: str):
     try:
         bot.reload_extension("Cogs.C_" + extension)
         await ctx.send(f"Cog {extension} was reloaded succesfully.")
-        h.create_log(f"Cog {extension} was reloaded by {bot.get_user()}")
+        h.create_log(f"Cog {extension} was reloaded by {bot.get_user()}", "cogs")
     except Exception as e:
         await ctx.send(f"Unable to reload {extension} due to error: {e}")
+        h.create_log(f"Unable to reload {extension} due to error: {e}", "cogs")
 
 @bot.slash_command(name="ping", description="Показывает пинг бота")
 async def c_ping(ctx: nextcord.Interaction):
