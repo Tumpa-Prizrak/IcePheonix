@@ -3,15 +3,12 @@ from time import sleep
 
 json_data = json.load(open("settings.json"))
 
-def create_log(message: str, code: str = "ok"):
-    file = open(f"logs/log_{datetime.date.today()}.txt", "a", encoding="UTF-8")
-    
+def create_log(message: str, code: str="ok"):
     out = f"[{code}][{datetime.datetime.now()}]: {message}"
     
     print(out)
-    
-    file.write(out + "\n")
-    file.close()
+    with open(f"logs/log_{datetime.date.today()}.txt", "a", encoding="UTF-8") as file:
+        file.write("\n" + out)
 
 def do_to_database(command: str, *options):
     dbFilename = json_data["db"]
@@ -36,4 +33,4 @@ def do_to_database(command: str, *options):
             continue
 
 def fix_long_embed(description):
-    return ([description[i:i+1024] for i in range(0, len(description), 1024)])
+    return([description[i:i+1024] for i in range(0, len(description), 1024)])
