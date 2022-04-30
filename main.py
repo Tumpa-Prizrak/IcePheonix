@@ -16,7 +16,7 @@ async def on_ready():
             except Exception as e:
                 h.create_log(f"Cog {i[2:-3]} failed to load due to error {e}", "error")
     
-    await bot.register_application_commands(c_ping, test)
+    await bot.register_new_application_commands()
     h.create_log("Bot is ready!", "ready")
 
 @bot.command()
@@ -76,18 +76,12 @@ async def __eval(ctx, *, content):
         await ctx.send(embed=embed)
         raise e
 
-@bot.slash_command()
-async def test(ctx: commands.Context, desc: str = nextcord.SlashOption(name="description", description="Enter embed description"), *, field: str = nextcord.SlashOption(name="field", description="Enter embed field")):
-    descriptions = h.fix_long_embed(desc)
-    for i in range(0, len(descriptions)):
-        emb = nextcord.Embed(title="Test", description=descriptions[i])
+@bot.command()
+async def test(ctx: commands.Context, desc: str):
+    for i in range(0, len(desc)):
+        emb = nextcord.Embed(title="Test", description=desc[i])
         
-        if field != "":
-            for _ in field.split(" "):
-                egg = _.split(':')
-                emb.add_field(name=egg[0], value=egg[1], inline=False)
-        
-        await ctx.send(embed=emb)
+        await ctx.send(embed=h.fix_long_embed(emb))
 
 if __name__ == "__main__":
     bot.run(json_data["token"])

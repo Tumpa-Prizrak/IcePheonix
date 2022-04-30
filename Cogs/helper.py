@@ -32,5 +32,13 @@ def do_to_database(command: str, *options):
             sleep(1)
             continue
 
-def fix_long_embed(description):
-    return([description[i:i+1024] for i in range(0, len(description), 1024)])
+def fix_long_embed(main_emb: nextcord.Embed):
+    if len(main_emb.description) < 1000:
+        return [main_emb]
+    out = []
+    while True:
+        out.append(nextcord.Embed(title=main_emb.title, color=main_emb.color, description=main_emb.description[:1000]))
+        main_emb.description = main_emb.description[:1000]
+        if main_emb.description == "":
+            break
+    return out
