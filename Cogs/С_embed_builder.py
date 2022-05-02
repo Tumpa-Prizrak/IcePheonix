@@ -6,7 +6,7 @@ from asyncio import run
 class embed_cog(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
-
+    
     @nextcord.slash_command(name="send_embed")
     async def send_embed(ctx: commands.Context,
                         title: str = nextcord.SlashOption(name="Title", description="Sets the embed's title.", required=True),

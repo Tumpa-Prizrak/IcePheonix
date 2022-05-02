@@ -37,6 +37,60 @@ async def reload_extension(ctx: nextcord.Interaction, extension: str):
 async def c_ping(ctx: nextcord.Interaction):
 	await ctx.send(f"Pong! Latency is {round(bot.latency * 1000)} ms")
 
+### Temp voices ###################################################################################################################################
+
+@bot.slash_command(name="set_voice")
+async def c_add_voice(interaction: nextcord.Interaction,
+                    channel_id: str = nextcord.SlashOption(name="id", description="Enter the channel name wich will be used to create a new voice сhannel")):
+    channel_id = int(channel_id)
+    g = bot.get_channel(channel_id)
+    if g == None or type(g) != nextcord.VoiceChannel:
+        return await interaction.send("Incorrect channel id")
+    h.do_to_database("INSERT INTO voiceCreators VALUES (?, ?)", channel_id, interaction.guild.id)
+    await interaction.send(":thumbsup:")
+    
+@bot.slash_command(name="unset_voice")
+async def c_remove_voice(interaction: nextcord.Interaction,
+                        channel_id: str = nextcord.SlashOption(name="id", description="Enter the channel name wich will be used to create a new voice сhannel")):
+    channel_id = int(channel_id)
+    g = bot.get_channel(channel_id)
+    if g == None or type(g) != nextcord.VoiceChannel:
+        return await interaction.send("Incorrect channel id")
+    h.do_to_database("DELETE FROM VoiceChannel WHERE voice=? and server=?", channel_id, interaction.guild.id)
+    await interaction.send(":thumbsup:")
+
+@bot.event
+async def on_voice_state_update(member: nextcord.Member,
+                                before: nextcord.VoiceState,
+                                after: nextcord.VoiceState):
+    try:
+        if before.channel.id == after.channel.id:
+            return
+    except AttributeError:
+        pass
+
+    try:
+        after.channel.id
+        h.create_log([after.channel.id, after.channel.guild.id], "DEBUG")
+        h.create_log(h.do_to_database("SELECT * FROM voiceCreators"), "DEBUG")
+
+        if [after.channel.id, after.channel.guild.id] in h.do_to_database("SELECT * FROM voiceCreators"):
+            egg = await after.channel.category.create_voice_channel(f"{member.display_name} voice")
+            await member.move_to(egg)
+            h.do_to_database("INSERT INTO createdVoices VALUES (?, ?, ?)", egg.id, egg.guild.id, member.id)
+    except AttributeError:
+        if [before.channel.id, member.guild.id] in h.do_to_database("SELECT id, guild FROM createdVoices") and len(before.channel.members) == 0:
+            await before.channel.delete()
+        h.create_log(before.channel.members, "DEBUG")
+        h.create_log(h.do_to_database("SELECT id, guild FROM createdVoices"), "DEBUG")
+
+@bot.slash_command(name="limit")
+async def c_limit(interaction: nextcord.Interaction):
+    pass
+
+########################################################################################################################################
+
+
 @bot.command(aliases=['eval', 'aeval', 'evaulate', 'выполнить', 'exec', 'execute', 'code'])
 async def __eval(ctx, *, content):
     minify_text = lambda txt: f'{txt[:1024]}...\n# ...и ещё {len(txt[1025:], "")} символов' if len(txt) >= 1024 else txt
@@ -59,7 +113,7 @@ async def __eval(ctx, *, content):
         end = time.perf_counter() - start  # рассчитываем конец выполнения
         if not code.startswith('#nooutput'):
             # Если код начинается с #nooutput, то вывода не будет
-            embed = nextcord.Embed(title="Успешно!", description=f"Выполнено за: {round(end * 1000, 5)} мс", color=0x99ff99)
+            embed = nextcord.Embed(title="Успешно!", description=f"Выполнено за: {end * 1000} мс", color=0x99ff99)
             """
             Есть нюанс: если входные/выходные данные будут длиннее 1024 символов, то эмбед не отправится, а функция выдаст ошибку.
             Именно поэтому сверху стоит print(r), а так же есть функция minify_text, которая
@@ -77,7 +131,7 @@ async def __eval(ctx, *, content):
         embed.add_field(name=f'Входные данные:', value=f'`{minify_text(str(code))}`', inline=False)
         await ctx.send(embed=embed)
         raise e
-6
+
 if __name__ == "__main__":
     h.create_log("Bot is loading...", "loading")
     bot.run(json_data["token"])
