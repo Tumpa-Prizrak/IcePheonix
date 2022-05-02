@@ -4,7 +4,7 @@ from time import sleep
 json_data = json.load(open("settings.json"))
 
 def create_log(message: str, code: str="ok"):
-    out = f"[{code}][{datetime.datetime.now()}]: {message}"
+    out = f"[{code.upper()}][{str(datetime.datetime.now())[:19]}]: {message}"
     
     print(out)
     with open(f"logs/log_{datetime.date.today()}.txt", "a", encoding="UTF-8") as file:
@@ -32,13 +32,5 @@ def do_to_database(command: str, *options):
             sleep(1)
             continue
 
-def fix_long_embed(main_emb: nextcord.Embed):
-    if len(main_emb.description) < 1000:
-        return [main_emb]
-    out = []
-    while True:
-        out.append(nextcord.Embed(title=main_emb.title, color=main_emb.color, description=main_emb.description[:1000]))
-        main_emb.description = main_emb.description[:1000]
-        if main_emb.description == "":
-            break
-    return out
+def fix_long_embed(description: nextcord.Embed):
+    return([description[i:i+1024] for i in range(0, len(description), 1024)])
