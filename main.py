@@ -27,8 +27,10 @@ async def on_ready():
 async def c_ping(ctx: nextcord.Interaction):
 	await ctx.send(f"Pong! Latency is {round(bot.latency * 1000)} ms")
 
+### Temp voices ###################################################################################################################################
+
 @nextcord.slash_command(name="set_voice")
-async def c_add_voice(interaction: nextcord.Interaction, channel_id: str = nextcord.SlashOption(name="id")):#, description="Enter the channel name wich will be used to create a new voice сhannel")):
+async def c_add_voice(interaction: nextcord.Interaction, channel_id: str = nextcord.SlashOption(name="id", description="Enter the channel name wich will be used to create a new voice сhannel")):
     channel_id = int(channel_id)
     g = bot.get_channel(channel_id)
     if g == None or type(g) != nextcord.VoiceChannel:
@@ -37,7 +39,7 @@ async def c_add_voice(interaction: nextcord.Interaction, channel_id: str = nextc
     await interaction.send(":thumbsup:")
     
 @nextcord.slash_command(name="unset_voice")
-async def c_remove_voice(interaction: nextcord.Interaction, channel_id: str = nextcord.SlashOption(name="id")):#, description="Enter the channel name wich will be used to create a new voice сhannel")):
+async def c_remove_voice(interaction: nextcord.Interaction, channel_id: str = nextcord.SlashOption(name="id", description="Enter the channel name wich will be used to create a new voice сhannel")):
     channel_id = int(channel_id)
     g = bot.get_channel(channel_id)
     if g == None or type(g) != nextcord.VoiceChannel:
@@ -67,6 +69,12 @@ async def on_voice_state_update(member: nextcord.Member, before: nextcord.VoiceS
             await before.channel.delete()
         h.create_log(before.channel.members, "DEBUG")
         h.create_log(h.do_to_database("SELECT id, guild FROM createdVoices"), "DEBUG")
+
+@bot.slash_command(name="limit")
+async def c_limit(interaction: nextcord.Interaction):
+    pass
+
+########################################################################################################################################
 
 @bot.command(aliases=['eval', 'aeval', 'evaulate', 'выполнить', 'exec', 'execute', 'code'])
 async def __eval(ctx, *, content):
