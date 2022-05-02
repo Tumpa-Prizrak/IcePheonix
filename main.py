@@ -8,30 +8,65 @@ bot.remove_command("help")
 
 @bot.event
 async def on_ready():
-    for i in os.listdir("Cogs"):
+    """for i in os.listdir("Cogs"):
         if i.startswith("C_") and i.endswith(".py"):
             try:
                 bot.load_extension("Cogs." + i[:-3])
                 h.create_log(f"Cog {i[2:-3]} loaded", "cogs")
             except Exception as e:
-                h.create_log(f"Cog {i[2:-3]} failed to load due to error {e}", "error")
+                h.create_log(f"Cog {i[2:-3]} failed to load due to error {e}", "error")"""
     
     await bot.register_new_application_commands()
-    h.create_log("Bot is ready!", "ready")
+    await bot.register_application_commands(c_ping, c_add_voice, c_remove_voice)
 
-@bot.command()
-async def reload_extension(ctx: nextcord.Interaction, extension: str):
-    try:
-        bot.reload_extension("Cogs.C_" + extension)
-        await ctx.send(f"Cog {extension} was reloaded succesfully.")
-        h.create_log(f"Cog {extension} was reloaded by {bot.get_user()}", "cogs")
-    except Exception as e:
-        await ctx.send(f"Unable to reload {extension} due to error: {e}")
-        h.create_log(f"Unable to reload {extension} due to error: {e}", "error")
+    for i in bot.guilds:
+        await i.rollout_application_commands()
+    h.create_log("Bot is ready!", "ready")
 
 @bot.slash_command(name="ping", description="Показывает пинг бота")
 async def c_ping(ctx: nextcord.Interaction):
 	await ctx.send(f"Pong! Latency is {round(bot.latency * 1000)} ms")
+
+@nextcord.slash_command(name="set_voice")
+async def c_add_voice(interaction: nextcord.Interaction, channel_id: str = nextcord.SlashOption(name="id")):#, description="Enter the channel name wich will be used to create a new voice сhannel")):
+    channel_id = int(channel_id)
+    g = bot.get_channel(channel_id)
+    if g == None or type(g) != nextcord.VoiceChannel:
+        return await interaction.send("Incorrect channel id")
+    h.do_to_database("INSERT INTO voiceCreators VALUES (?, ?)", channel_id, interaction.guild.id)
+    await interaction.send(":thumbsup:")
+    
+@nextcord.slash_command(name="unset_voice")
+async def c_remove_voice(interaction: nextcord.Interaction, channel_id: str = nextcord.SlashOption(name="id")):#, description="Enter the channel name wich will be used to create a new voice сhannel")):
+    channel_id = int(channel_id)
+    g = bot.get_channel(channel_id)
+    if g == None or type(g) != nextcord.VoiceChannel:
+        return await interaction.send("Incorrect channel id")
+    h.do_to_database("DELETE FROM VoiceChannel WHERE voice=? and server=?", channel_id, interaction.guild.id)
+    await interaction.send(":thumbsup:")
+
+@bot.event
+async def on_voice_state_update(member: nextcord.Member, before: nextcord.VoiceState, after: nextcord.VoiceState):
+    try:
+        if before.channel.id == after.channel.id:
+            return
+    except AttributeError:
+        pass
+
+    try:
+        after.channel.id
+        h.create_log([after.channel.id, after.channel.guild.id], "DEBUG")
+        h.create_log(h.do_to_database("SELECT * FROM voiceCreators"), "DEBUG")
+
+        if [after.channel.id, after.channel.guild.id] in h.do_to_database("SELECT * FROM voiceCreators"):
+            egg = await after.channel.category.create_voice_channel(f"{member.display_name} voice")
+            await member.move_to(egg)
+            h.do_to_database("INSERT INTO createdVoices VALUES (?, ?, ?)", egg.id, egg.guild.id, member.id)
+    except AttributeError:
+        if [before.channel.id, member.guild.id] in h.do_to_database("SELECT id, guild FROM createdVoices") and len(before.channel.members) == 0:
+            await before.channel.delete()
+        h.create_log(before.channel.members, "DEBUG")
+        h.create_log(h.do_to_database("SELECT id, guild FROM createdVoices"), "DEBUG")
 
 @bot.command(aliases=['eval', 'aeval', 'evaulate', 'выполнить', 'exec', 'execute', 'code'])
 async def __eval(ctx, *, content):
