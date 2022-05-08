@@ -1,7 +1,10 @@
 import Cogs.helper as h
 import nextcord, json, aeval, time, os
 from nextcord.ext import commands
+import urllib.request
+from time import sleep
 
+started = False
 json_data = json.load(open("settings.json", "r"))
 bot = commands.Bot(command_prefix="__", case_insensitive=True, owner_ids=json_data["owners"], strip_after_prefix=True)
 bot.remove_command("help")
@@ -19,6 +22,17 @@ async def on_ready():
     await bot.register_new_application_commands()
     await bot.register_application_commands()
     h.create_log("Bot is ready!", "ready")
+    
+    while True:
+        with urllib.request.urlopen("https://emapa.fra1.digitaloceanspaces.com/statuses.json") as url:
+            data = json.loads(url.read().decode())
+            if data["states"]["Закарпатська область"]["districts"]["Мукачівський район"]["enabled"] == True:
+                if started == False:
+                    started = True
+                    await bot.get_channel(961178797770670100).send("Квина, у тебя сейчас воздушная тревога. Спрячься в ближайшем укрытии, если это возможно.")
+            else:
+                started = False
+        sleep(60)
 
 @bot.command()
 async def reload_extension(ctx: nextcord.Interaction, extension: str):
