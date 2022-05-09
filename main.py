@@ -1,16 +1,16 @@
 import Cogs.helper as h
-import nextcord, json, aeval, time, os
+import nextcord, json, aeval, os
 from nextcord.ext import commands
 import urllib.request
-from time import sleep
+from time import sleep, perf_counter
 
-started = False
 json_data = json.load(open("settings.json", "r"))
 bot = commands.Bot(command_prefix="__", case_insensitive=True, owner_ids=json_data["owners"], strip_after_prefix=True)
 bot.remove_command("help")
 
 @bot.event
 async def on_ready():
+    started = False
     for i in os.listdir("Cogs"):
         if i.startswith("C_") and i.endswith(".py"):
             try:
@@ -24,6 +24,7 @@ async def on_ready():
     h.create_log("Bot is ready!", "ready")
     
     while True:
+        start = perf_counter()
         with urllib.request.urlopen("https://emapa.fra1.digitaloceanspaces.com/statuses.json") as url:
             data = json.loads(url.read().decode())
             if data["states"]["Закарпатська область"]["districts"]["Мукачівський район"]["enabled"] == True:
@@ -31,8 +32,12 @@ async def on_ready():
                     started = True
                     await bot.get_channel(961178797770670100).send("Квина, у тебя сейчас воздушная тревога. Спрячься в ближайшем укрытии, если это возможно.")
             else:
+                if started == True:
+                    await bot.get_channel(961178797770670100).send(f"Отбой! Квина, ты в безопасности.")
                 started = False
-        sleep(60)
+        h.create_log("Checked alerts", "alerts", False)
+        end = perf_counter() - start
+        sleep(59.985 - end)
 
 @bot.command()
 async def reload_extension(ctx: nextcord.Interaction, extension: str):
@@ -72,10 +77,10 @@ async def __eval(ctx, *, content):
         "ctx": ctx
     }
     
-    start = time.perf_counter()  # import time, для расчёта времени выполнения
+    start = perf_counter()  # import time, для расчёта времени выполнения
     try:
         r = await aeval.aeval(f"""{code}""", standard_args, {})  # выполняем код
-        end = time.perf_counter() - start  # рассчитываем конец выполнения
+        end = perf_counter() - start  # рассчитываем конец выполнения
         if not code.startswith('#nooutput'):
             # Если код начинается с #nooutput, то вывода не будет
             embed = nextcord.Embed(title="Успешно!", description=f"Выполнено за: {round(end * 1000, 5)} мс", color=0x99ff99)
@@ -90,7 +95,7 @@ async def __eval(ctx, *, content):
             
             h.create_log(f"{ctx.author} used eval command with input: {code}.")
     except Exception as e:
-        end = time.perf_counter() - start
+        end = perf_counter() - start
         code = minify_text(str(code))
         embed = nextcord.Embed(title=f"При выполнении возникла ошибка.\nВремя: {round(end * 1000, 5)} мс", description=f'Ошибка:\n```py\n{e}```', color=0xff0000)
         embed.add_field(name=f'Входные данные:', value=f'`{minify_text(str(code))}`', inline=False)

@@ -3,12 +3,13 @@ from time import sleep
 
 json_data = json.load(open("settings.json"))
 
-def create_log(message: str, code: str="ok"):
+def create_log(message: str, code: str="ok", is_logged: bool=True):
     out = f"[{code.upper()}][{str(datetime.datetime.now())[:19]}]: {message}"
-    
     print(out)
-    with open(f"logs/log_{datetime.date.today()}.txt", "a", encoding="UTF-8") as file:
-        file.write("\n" + out)
+    
+    if is_logged == True:
+        with open(f"logs/log_{datetime.date.today()}.txt", "a", encoding="UTF-8") as file:
+            file.write("\n" + out)
 
 def do_to_database(command: str, *options):
     dbFilename = json_data["db"]
