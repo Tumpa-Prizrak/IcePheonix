@@ -3,6 +3,7 @@ import nextcord, json, aeval, os
 from nextcord.ext import commands
 import urllib.request
 from time import sleep, perf_counter
+#from bs4 import BeautifulSoup as bs
 
 json_data = json.load(open("settings.json", "r"))
 bot = commands.Bot(command_prefix="__", case_insensitive=True, owner_ids=json_data["owners"], strip_after_prefix=True)
@@ -25,8 +26,8 @@ async def on_ready():
     
     while True:
         start = perf_counter()
-        with urllib.request.urlopen("https://emapa.fra1.digitaloceanspaces.com/statuses.json") as url:
-            data = json.loads(url.read().decode())
+        with urllib.request.urlopen("https://emapa.fra1.digitaloceanspaces.com/statuses.json") as alerts:
+            data = json.loads(alerts.read().decode())
             if data["states"]["Закарпатська область"]["districts"]["Мукачівський район"]["enabled"] == True:
                 if started == False:
                     started = True
@@ -43,7 +44,7 @@ async def on_ready():
 async def reload_extension(ctx: nextcord.Interaction, extension: str):
     if ctx.author.id not in json_data["owners"]:
         return
-    
+
     try:
         bot.reload_extension("Cogs.C_" + extension)
         await ctx.send(f"Cog {extension} was reloaded succesfully.")
@@ -61,6 +62,13 @@ async def c_ping(ctx: nextcord.Interaction):
 #TODO fuck my ass
 
 ########################################################################################################################################
+
+@bot.command(name="meme")
+async def meme(ctx: nextcord.Interaction):
+    with urllib.request.urlopen("https://api.dtf.ru/v1.8/subsite/64966/timeline") as memepage:
+        data = json.loads(memepage.read().decode())
+        print(data)
+        await ctx.send(data[0])
 
 @bot.command(aliases=['eval', 'aeval', 'evaulate', 'выполнить', 'exec', 'execute', 'code'])
 async def __eval(ctx, *, content):
@@ -103,5 +111,5 @@ async def __eval(ctx, *, content):
         raise e
 
 if __name__ == "__main__":
-    h.create_log("Bot is loading...", "loading")
+    h.create_log("Bot is loading...", "loading", False)
     bot.run(json_data["token"])
