@@ -1,14 +1,4 @@
-'''import Cogs.helper as h
-import nextcord, json, aeval, os
-from nextcord.ext import commands
-import urllib.request
-from time import sleep, perf_counter
-#from bs4 import BeautifulSoup as bs
-
-json_data = json.load(open("settings.json", "r"))
-bot = commands.Bot(command_prefix="__", case_insensitive=True, owner_ids=json_data["owners"], strip_after_prefix=True)
-bot.remove_command("help")
-
+'''
 @bot.event
 async def on_ready():
     started = False
@@ -112,9 +102,18 @@ async def __eval(ctx, *, content):
 
 if __name__ == "__main__":
     h.create_log("Bot is loading...", "loading", False)
-    bot.run(json_data["token"])'''
+    bot.run(json_data["token"])
+'''
+
+import Cogs.helper as h
 import discord, json
 from discord.ext import commands
+from discord.ext.commands import has_permissions, MissingPermissions
+#import aeval
+#import os
+#import urllib.request
+#from time import sleep, perf_counter
+#from bs4 import BeautifulSoup as brawlstars
 
 json_data = json.load(open("settings.json", "r"))
 bot = commands.Bot(command_prefix="__", case_insensitive=True, owner_ids=json_data["owners"], strip_after_prefix=True, intents=discord.Intents.all())
@@ -122,10 +121,20 @@ bot.remove_command("help")
 
 @bot.event
 async def on_ready():
-    print("Ready!")
+    h.create_log("Bot is ready!", "ready")
+
+@bot.event
+async def on_member_join(ctx: discord.Interaction, member: discord.Member):
+    await ctx.response.send_message(f'{member.name} joined {discord.utils.format_dt(member.joined_at)}')
 
 @bot.tree.command()
 async def ping(interaction: discord.Interaction):
-    await interaction.response.send_message("Pong from d.py!")
+    await interaction.response.send_message(f"Pong! Latency is {round(bot.latency * 1000)} ms.", ephemeral=True)
+
+@bot.tree.command()
+@has_permissions(manage_messages=True)
+async def clear(ctx: discord.Interaction):
+    pass
+    #TODO: make message deletion func and check if user is able to manage messages
 
 bot.run(json_data["token"])

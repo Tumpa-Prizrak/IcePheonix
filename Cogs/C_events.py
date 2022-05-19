@@ -1,7 +1,7 @@
 ### Hello and Goodbye ###
 
-import nextcord
-from nextcord.ext import commands
+import discord
+from discord.ext import commands
 import Cogs.helper as h
 
 class embed_cog(commands.Cog):
@@ -9,12 +9,12 @@ class embed_cog(commands.Cog):
         self.bot = bot
     
     @commands.Cog.listener()
-    async def on_member_join(self, member: nextcord.Member):
+    async def on_member_join(self, member: discord.Member):
         if (member.guild.id,) in h.do_to_database("SELECT guild FROM channels"):
             h.do_to_database("SELECT hello_channel FROM channels WHERE guild=?")[0].send(f"{member.mention} joined!\nNow there're {len(member.guild.members)} members!")
         
     @commands.Cog.listener()
-    async def on_member_remove(self, member: nextcord.Member):
+    async def on_member_remove(self, member: discord.Member):
         if (member.guild.id,) in h.do_to_database("SELECT guild FROM channels"):
             h.do_to_database("SELECT hello_channel FROM channels WHERE guild=?")[0].send(f"{member.mention} leaved!\nNow there're {len(member.guild.members)} members!")
 

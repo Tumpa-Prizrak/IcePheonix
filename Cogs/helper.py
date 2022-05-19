@@ -1,4 +1,4 @@
-import sqlite3, datetime, json, nextcord
+import sqlite3, datetime, json, discord
 from time import sleep
 
 json_data = json.load(open("settings.json"))
@@ -33,5 +33,5 @@ def do_to_database(command: str, *options):
             sleep(1)
             continue
 
-def fix_long_embed(description: nextcord.Embed):
+def fix_long_embed(description: discord.Embed):
     return([description[i:i+1024] for i in range(0, len(description), 1024)])
