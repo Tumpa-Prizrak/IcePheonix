@@ -132,12 +132,13 @@ async def ping(interaction: discord.Interaction):
     await interaction.response.send_message(f"Pong! Latency is {round(bot.latency * 1000)} ms.", ephemeral=True)
 
 @bot.tree.command()
-async def clear(interaction: discord.Interaction, col: int = discord.SelectOption(label="count", description="How many messages need to delete")):
+async def clear(interaction: discord.Interaction, amount: int = discord.SelectOption(label="amount", description="Amount of messages to delete")):
     if not interaction.user.guild_permissions.manage_messages:
-        await interaction.response.send_message("You cannot use this this command, sorry.", ephemeral=True)
-    if col < 0:
-        await interaction.response.send_message("Inncorect value. It must be greater than 0", ephemeral=True)
-    await interaction.channel.purge(col)
-    await interaction.response.send_message(f"{col} messages have been deleted.", ephemeral=True)
+        return await interaction.response.send_message("You cannot use this this command, sorry.", file="media/incorrect_permissions" ,ephemeral=True)
+    if amount < 0:
+        return await interaction.response.send_message("Inncorect value. It must be greater than 0", ephemeral=True)
+    
+    await interaction.channel.purge(limit=amount)
+    await interaction.response.send_message(f"{amount} messages have been deleted.", ephemeral=True)
 
 bot.run(json_data["token"])
