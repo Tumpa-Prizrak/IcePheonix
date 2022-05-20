@@ -108,7 +108,6 @@ if __name__ == "__main__":
 import Cogs.helper as h
 import discord, json
 from discord.ext import commands
-from discord.ext.commands import has_permissions, MissingPermissions
 #import aeval
 #import os
 #import urllib.request
@@ -124,17 +123,21 @@ async def on_ready():
     h.create_log("Bot is ready!", "ready")
 
 @bot.event
-async def on_member_join(ctx: discord.Interaction, member: discord.Member):
-    await ctx.response.send_message(f'{member.name} joined {discord.utils.format_dt(member.joined_at)}')
+async def on_member_join(member: discord.Member):
+    print(member)
+    # await ctx.response.send_message(f'{member.name} joined {discord.utils.format_dt(member.joined_at)}')
 
 @bot.tree.command()
 async def ping(interaction: discord.Interaction):
     await interaction.response.send_message(f"Pong! Latency is {round(bot.latency * 1000)} ms.", ephemeral=True)
 
 @bot.tree.command()
-@has_permissions(manage_messages=True)
-async def clear(ctx: discord.Interaction):
-    pass
-    #TODO: make message deletion func and check if user is able to manage messages
+async def clear(interaction: discord.Interaction, col: int = discord.SelectOption(label="count", description="How many messages need to delete")):
+    if not interaction.user.guild_permissions.manage_messages:
+        await interaction.response.send_message("You cannot use this this command, sorry.", ephemeral=True)
+    if col < 0:
+        await interaction.response.send_message("Inncorect value. It must be greater than 0", ephemeral=True)
+    await interaction.channel.purge(col)
+    await interaction.response.send_message(f"{col} messages have been deleted.", ephemeral=True)
 
 bot.run(json_data["token"])
