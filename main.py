@@ -120,6 +120,9 @@ bot.remove_command("help")
 
 @bot.event
 async def on_ready():
+    activity = discord.Game(name="Prefix: __", type=3)
+    await bot.change_presence(status=discord.Status.dnd, activity=discord.Activity(type=3, name="фильм"))
+    
     h.create_log("Bot is ready!", "ready")
 
 @bot.event
@@ -130,9 +133,9 @@ async def on_member_join(member: discord.Member):
 @bot.tree.command()
 async def ping(interaction: discord.Interaction):
     await interaction.response.send_message(f"Pong! Latency is {round(bot.latency * 1000)} ms.", ephemeral=True)
-
+'''
 @bot.tree.command()
-async def clear(interaction: discord.Interaction, amount: int = discord.SelectOption(label="amount", description="Amount of messages to delete")):
+async def clear(interaction: discord.Interaction, amount: int = discord.SelectOption(label="This bullshit doesn't want to work.", value=3)):
     if not interaction.user.guild_permissions.manage_messages:
         return await interaction.response.send_message("You cannot use this this command, sorry.", file="media/incorrect_permissions" ,ephemeral=True)
     if amount < 0:
@@ -140,5 +143,5 @@ async def clear(interaction: discord.Interaction, amount: int = discord.SelectOp
     
     await interaction.channel.purge(limit=amount)
     await interaction.response.send_message(f"{amount} messages have been deleted.", ephemeral=True)
-
+'''
 bot.run(json_data["token"])

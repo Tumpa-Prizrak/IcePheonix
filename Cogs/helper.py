@@ -3,11 +3,11 @@ from time import sleep
 
 json_data = json.load(open("settings.json"))
 
-def create_log(message: str, code: str="ok", is_logged: bool=True):
+def create_log(message: str, code: str="ok", logged: bool=True):
     out = f"[{code.upper()}][{str(datetime.datetime.now())[:19]}]: {message}"
     print(out)
     
-    if is_logged == True:
+    if logged:
         with open(f"logs/log_{datetime.date.today()}.txt", "a", encoding="UTF-8") as file:
             file.write("\n" + out)
 
@@ -25,8 +25,9 @@ def do_to_database(command: str, *options):
             cursor.close()
             conn.close()
             egg = []
-            for i in returnStr:
-                egg.append(list(map(lambda x: eval(x) if "startswith" in dir(x) and x.startswith('[') and x.endswith(']') else x, i)))
+            print (egg.append(list(map(lambda x: eval(x)\
+                            if "startswith" in dir(x) and x.startswith('[') and x.endswith(']') else x, \
+                            (i for i in returnStr)))))
             return egg
         except sqlite3.OperationalError as e:
             create_log(e, code="error")
