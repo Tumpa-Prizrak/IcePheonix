@@ -105,7 +105,7 @@ if __name__ == "__main__":
     bot.run(json_data["token"])
 '''
 
-import Cogs.helper as h
+import helper as h
 import discord, json
 from discord.ext import commands
 #import aeval
@@ -120,15 +120,11 @@ bot.remove_command("help")
 
 @bot.event
 async def on_ready():
-    activity = discord.Game(name="Prefix: __", type=3)
-    await bot.change_presence(status=discord.Status.dnd, activity=discord.Activity(type=3, name="фильм"))
-    
     h.create_log("Bot is ready!", "ready")
 
 @bot.event
 async def on_member_join(member: discord.Member):
     print(member)
-    # await ctx.response.send_message(f'{member.name} joined {discord.utils.format_dt(member.joined_at)}')
 
 @bot.tree.command()
 async def ping(interaction: discord.Interaction):
