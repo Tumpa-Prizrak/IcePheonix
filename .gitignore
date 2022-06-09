@@ -1,4 +1,2 @@
-__pycache__/
 .vscode/
-.idea/
-logs/*.txt
+Cogs/__pycache__

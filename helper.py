@@ -1,17 +1,15 @@
-import sqlite3, datetime, json, discord
+import datetime
+import json
+import sqlite3
 from time import sleep
 
-json_data = json.load(open("settings.json"))
+import discord
 
-def create_log(message: str, code: str="ok", logged: bool=True):
-    out = f"[{code.upper()}][{str(datetime.datetime.now())[:19]}]: {message}"
-    print(out)
-    
-    if logged:
-        with open(f"logs/log_{datetime.date.today()}.txt", "a", encoding="UTF-8") as file:
-            file.write("\n" + out)
+json_data = json.load(open("config.json"))
 
-def do_to_database(command: str, *options):
+def embed_builder(title: str, *, desc: str = None, color: discord.Colour = discord.Colour.green()): return discord.Embed(title=title, description=desc, color=color)
+
+def do_to_database(command: str, *options): #TODO central it
     dbFilename = json_data["db"]
     while True:
         try:
@@ -34,5 +32,10 @@ def do_to_database(command: str, *options):
             sleep(1)
             continue
 
-def fix_long_embed(description: discord.Embed):
-    return([description[i:i+1024] for i in range(0, len(description), 1024)])
+def create_log(message: str, code: str="ok", logged: bool=True):
+    out = f"[{code.upper()}][{str(datetime.datetime.now())[:19]}]: {message}"
+    print(out)
+    
+    if logged:
+        with open(f"logs/log_{datetime.date.today()}.txt", "a", encoding="UTF-8") as file:
+            file.write("\n" + out)
