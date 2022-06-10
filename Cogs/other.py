@@ -33,12 +33,13 @@ class OtherCommand(commands.Cog):
     async def profile(self, ctx: commands.Context, person: discord.Member = None):
         if person == None:
             person = ctx.author
+        info = h.get_profile_info(person)
         emb = discord.Embed(title="Ваш профиль" if person == None else f"Профиль {person.display_name}", color=person.top_role.colour)
         emb.set_author(name=str(person))
         emb.set_thumbnail(url=person.avatar_url)
         emb.add_field(name=f"Статус", value=str(person.status), inline=False)
-        # emb.add_field(name=f"Кастомный статус", value=str(person.custom_status), inline=False) #FIXME Fix with games and other staff like that
         emb.add_field(name=f"Активность", value=str(person.activity), inline=False)
+        emb.add_field(name="Обо мне", value=info[1] if info[1] is not None else "*Ничего не сказано*")
         emb.add_field(name=f"ID", value=str(person.id), inline=False)
         emb.add_field(name="Дата регистрации",
                       value=f"<t:{round(person.created_at.timestamp())}:R>",
@@ -47,10 +48,20 @@ class OtherCommand(commands.Cog):
                       value=f"<t:{round(person.joined_at.timestamp())}:R>",
                       inline=False)
         emb.add_field(name="Высшая роль", value=person.top_role, inline=False)
-        all_roles = ", ".join(list(map(lambda x: '"' + x.name + '"', person.roles)))
+        all_roles = ", ".join(list(map(lambda x: x.mention, person.roles)))
         emb.add_field(name="Роли", value=all_roles if len(emb) + len(all_roles) < 1000 else "*Недоступно*") #FIXME spliting instade "*Недоступно*"
         await ctx.send(embed=emb)
-    
+
+    @commands.command(usage='set <about | picture> <значение>')
+    async def set(self, ctx: commands.Context, colum: str, val: str = None):
+        if colum in ('about', 'a'):
+            h.do_to_database("UPDATE profile SET about=? WHERE name=?", val, ctx.author.id)
+            await ctx.send(f"Значение \"Обо мне\" изменено на {val}" if val is not None else "Значение")
+        elif colum in ('picture', 'pic', 'p'):
+            h.do_to_database("UPDATE profile SET about=? WHERE pic=?", val, ctx.author.id)
+        else:
+            await ctx.send('Неправильный аттрибут. Возможные значения: info | picture')
+
     #TODO vote
     #TODO info
 

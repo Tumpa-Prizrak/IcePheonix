@@ -22,15 +22,16 @@ def do_to_database(command: str, *options): #TODO central it
             conn.commit()
             cursor.close()
             conn.close()
-            egg = []
-            print (egg.append(list(map(lambda x: eval(x)\
-                            if "startswith" in dir(x) and x.startswith('[') and x.endswith(']') else x, \
-                            (i for i in returnStr)))))
-            return egg
+            return returnStr if len(returnStr) != 1 else returnStr[0]
         except sqlite3.OperationalError as e:
             create_log(e, code="error")
             sleep(1)
             continue
+
+def get_profile_info(person: int):
+    if not do_to_database("SELECT * FROM profile WHERE name = ?", person.id):
+        do_to_database("INSERT INTO profile values (?, ?, ?)", person.id, None, None)
+    return do_to_database("SELECT * FROM profile WHERE name = ?", person.id)
 
 def create_log(message: str, code: str="ok", logged: bool=True):
     out = f"[{code.upper()}][{str(datetime.datetime.now())[:19]}]: {message}"

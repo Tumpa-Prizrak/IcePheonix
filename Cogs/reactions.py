@@ -8,7 +8,7 @@ import json
 
 json_data = json.load(open("config.json"))
 
-class ReactionsCommand(commands.Cog):
+class ReactionsCommand(commands.Cog): #TODO custom text
     def __init__(self, client):
         self.client = client
         self.session = aiohttp.ClientSession()

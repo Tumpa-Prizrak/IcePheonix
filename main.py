@@ -1,3 +1,5 @@
+#TODO CherryFox, Вы сделали что-то великое! В награду, я даю тебе эту клубнику!
+
 import asyncio
 import datetime
 import json
@@ -94,7 +96,6 @@ async def __eval(ctx, *, content):
         embed.add_field(name=f'Входные данные:', value=f'`{minify_text(str(code))}`', inline=False)
         await ctx.send(embed=embed)
         raise e
-
 
 try:
     bot.run(json_data['token'])
