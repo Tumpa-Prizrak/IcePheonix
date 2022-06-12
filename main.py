@@ -1,11 +1,10 @@
-#TODO CherryFox, Вы сделали что-то великое! В награду, я даю тебе эту клубнику!
+# TODO CherryFox, Вы сделали что-то великое! В награду, я даю тебе эту клубнику!
 
 import asyncio
 import datetime
 import json
 import os
 import random
-import sqlite3
 import sys
 import time
 
@@ -23,8 +22,6 @@ bot = commands.Bot(command_prefix=commands.when_mentioned_or(json_data['prefix']
                    case_insensitive=True)
 bot.remove_command("help")
 # slash = InteractionClient(bot)
-conn = sqlite3.connect("Cogs/mysqldb.db")
-curor = conn.cursor()
 # Load Cogs
 for i in os.listdir("Cogs/"):
     try:
@@ -53,7 +50,7 @@ minify_text = lambda txt: f'{txt[:-900]}...\n# ...и ещё {len(txt.replace(txt
     txt) >= 1024 else txt
 
 
-@bot.command(aliases=['eval', 'aeval', 'evaulate', 'выполнить', 'exec', 'execute', 'code'])
+@bot.command(aliases=['eval', 'aeval', 'evaluate', 'выполнить', 'exec', 'execute', 'code'])
 async def __eval(ctx, *, content):
     if ctx.author.id not in json_data['owners']:
         return await ctx.send("Кыш!")
@@ -80,11 +77,6 @@ async def __eval(ctx, *, content):
         if not code.startswith('#nooutput'):
             # Если код начинается с #nooutput, то вывода не будет
             embed = discord.Embed(title="Успешно!", description=f"Выполнено за: {ended}", color=0x99ff99)
-            """
-             Есть нюанс: если входные/выходные данные будут длиннее 1024 символов, то эмбед не отправится, а функция выдаст ошибку.
-             Именно поэтому сверху стоит print(r), а так же есть функция minify_text, которая
-             минифицирует текст для эмбеда во избежание БэдРеквеста (слишком много символов).
-            """
             embed.add_field(name=f'Входные данные:', value=f'`{minify_text(str(code))}`')
             embed.add_field(name=f'Выходные данные:', value=f'`{minify_text(str(r))}`', inline=False)
             await ctx.send(embed=embed)
@@ -92,10 +84,11 @@ async def __eval(ctx, *, content):
         ended = time.time() - start
         code = minify_text(str(code))
         embed = discord.Embed(title=f"При выполнении возникла ошибка.\nВремя: {ended}",
-                                  description=f'Ошибка:\n```py\n{e}```', color=0xff0000)
+                              description=f'Ошибка:\n```py\n{e}```', color=0xff0000)
         embed.add_field(name=f'Входные данные:', value=f'`{minify_text(str(code))}`', inline=False)
         await ctx.send(embed=embed)
         raise e
+
 
 try:
     bot.run(json_data['token'])
