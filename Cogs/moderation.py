@@ -8,7 +8,7 @@ syntax = "ban <Человек> [Причина]"
 
 
 class ModerationCommand(commands.Cog):
-    def __init__(self, client):
+    def __init__(self, client: commands.Bot):
         self.client = client
         self.someShit = {
             "man": "<Человек>",
@@ -73,7 +73,7 @@ class ModerationCommand(commands.Cog):
     @commands.has_permissions(manage_roles=True)
     async def warn(self, ctx: commands.Context, man: discord.Member, *, reason: str):
         h.do_to_database("INSERT INTO warns (person, server, warn, moderator) VALUES (?, ?, ?, ?)",
-                         man, ctx.guild.id, reason, ctx.author.id)
+                         man.id, ctx.guild.id, reason, ctx.author.id)
         await ctx.send(
             f"{man.mention} было выдано предупреждение по причине \"{reason}\" модератором {ctx.author.mention}")
 
@@ -81,13 +81,15 @@ class ModerationCommand(commands.Cog):
     async def warns(self, ctx: commands.Context, man: discord.Member = None):
         if man is None:
             man = ctx.author
-        man_warns = h.do_to_database("SELECT * FROM warn WHERE person=? server=?", man.id, ctx.guild.id)
+        man_warns = h.do_to_database("SELECT * FROM warns WHERE person=? and server=?", man.id, ctx.guild.id, if_short=False)
         emb = discord.Embed(title=f"\"{man.display_name}\" warns")
         if not man_warns:
             emb.description = "*Пусто*"
         else:
-            emb.description = "\n".join(map(lambda x: f"#{x[0]}: {x[3].mention} - {x[2]}",
-                                        [("*Номер нарушения*", None, "*Причина*", "*модератор*")] + man_warns))
+            await ctx.send(str(man_warns))
+            emb.description = "\n".join(map(lambda x: f"#{x[0]}: {self.client.get_user(x[4]).mention if self.client.get_user(x[4]) is not None else 'Неизвестно'} - {x[3]}",
+                                            man_warns))
+            emb.set_footer(text="#Номер нарушения: модератор - Причина")
         await ctx.send(embed=emb)
 
     # TODO mute

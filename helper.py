@@ -13,7 +13,7 @@ def embed_builder(title: str, *, desc: str = None,
                                                                                         color=color)
 
 
-def do_to_database(command: str, *options):
+def do_to_database(command: str, *options, if_short: bool = True):
     dbFilename = json_data["db"]
     while True:
         try:
@@ -26,7 +26,7 @@ def do_to_database(command: str, *options):
             conn.commit()
             cursor.close()
             conn.close()
-            return returnStr if len(returnStr) != 1 else returnStr[0]
+            return returnStr[0] if if_short and len(returnStr) == 1 else returnStr
         except sqlite3.OperationalError as e:
             create_log(e, code="error")
             sleep(1)

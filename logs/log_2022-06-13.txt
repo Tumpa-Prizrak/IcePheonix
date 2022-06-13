@@ -1,0 +1,15 @@
+
+[ERROR][2022-06-13 12:38:25]: near "server": syntax error
+[ERROR][2022-06-13 12:38:26]: near "server": syntax error
+[ERROR][2022-06-13 12:38:27]: near "server": syntax error
+[ERROR][2022-06-13 12:38:28]: near "server": syntax error
+[ERROR][2022-06-13 12:38:29]: near "server": syntax error
+[ERROR][2022-06-13 12:38:30]: near "server": syntax error
+[ERROR][2022-06-13 12:38:31]: near "server": syntax error
+[ERROR][2022-06-13 12:38:32]: near "server": syntax error
+[ERROR][2022-06-13 12:38:33]: near "server": syntax error
+[ERROR][2022-06-13 12:39:11]: no such table: warn
+[ERROR][2022-06-13 12:39:12]: no such table: warn
+[ERROR][2022-06-13 12:39:13]: no such table: warn
+[ERROR][2022-06-13 12:39:14]: no such table: warn
+[ERROR][2022-06-13 12:39:15]: no such table: warn
