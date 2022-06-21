@@ -77,7 +77,8 @@ class ModerationCommand(commands.Cog):
         await ctx.send(
             f"{man.mention} было выдано предупреждение по причине \"{reason}\" модератором {ctx.author.mention}")
 
-    @commands.command()
+    @commands.command(usage='warns <Участник>', brief='Увидеть предупреждения участника',
+                      description='.')
     async def warns(self, ctx: commands.Context, man: discord.Member = None):
         if man is None:
             man = ctx.author
@@ -91,6 +92,8 @@ class ModerationCommand(commands.Cog):
                                             man_warns))
             emb.set_footer(text="#Номер нарушения: модератор - Причина")
         await ctx.send(embed=emb)
+    
+    @commands.command(usage='clear <количество>', brief='Очищает указанное количество сообщений')
 
     # TODO mute
 
