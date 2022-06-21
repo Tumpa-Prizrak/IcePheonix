@@ -3,9 +3,6 @@ from discord.ext import commands
 
 import helper as h
 
-doc = """Дать Фениксу в лапы Банхаммер и указать на человека"""
-syntax = "ban <Человек> [Причина]"
-
 
 class ModerationCommand(commands.Cog):
     def __init__(self, client: commands.Bot):
@@ -77,8 +74,8 @@ class ModerationCommand(commands.Cog):
         await ctx.send(
             f"{man.mention} было выдано предупреждение по причине \"{reason}\" модератором {ctx.author.mention}")
 
-    @commands.command(usage='warns <Участник>', brief='Увидеть предупреждения участника',
-                      description='.')
+    @commands.command(usage='warns <Участник>', brief='список предупреждений участника',
+                      description='<Квина, заполни, плиз>')
     async def warns(self, ctx: commands.Context, man: discord.Member = None):
         if man is None:
             man = ctx.author
@@ -93,7 +90,10 @@ class ModerationCommand(commands.Cog):
             emb.set_footer(text="#Номер нарушения: модератор - Причина")
         await ctx.send(embed=emb)
     
-    @commands.command(usage='clear <количество>', brief='Очищает указанное количество сообщений')
+    @commands.command(usage='clear <количество>', brief='Очищает указанное количество сообщений', 
+                      description="<Квина, заполни, плиз>")
+    async def clear(self, ctx: commands.Context, count: int):
+        pass
 
     # TODO mute
 
