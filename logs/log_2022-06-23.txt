@@ -1,0 +1,9 @@
+
+[OK][2022-06-23 17:08:47]: Load cog: Cogs.moderation
+[OK][2022-06-23 17:08:47]: Load cog: Cogs.other
+[OK][2022-06-23 17:08:47]: Load cog: Cogs.reactions
+[OK][2022-06-23 17:08:53]: Ready
+[OK][2022-06-23 17:25:29]: Load cog: Cogs.moderation
+[OK][2022-06-23 17:25:29]: Load cog: Cogs.other
+[OK][2022-06-23 17:25:29]: Load cog: Cogs.reactions
+[OK][2022-06-23 17:25:32]: Ready
