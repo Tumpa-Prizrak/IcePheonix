@@ -16,9 +16,7 @@ from discord.ext import commands, tasks
 
 import helper as h
 
-json_data = json.load(open("config.json"))
-
-bot = commands.Bot(command_prefix=commands.when_mentioned_or(json_data['prefix']), intents=discord.Intents.all(),
+bot = commands.Bot(command_prefix=commands.when_mentioned_or(h.json_data['prefix']), intents=discord.Intents.all(),
                    case_insensitive=True)
 bot.remove_command("help")
 # slash = InteractionClient(bot)
@@ -27,7 +25,7 @@ for i in os.listdir("Cogs/"):
     try:
         if i.endswith(".py"):
             bot.load_extension(f"Cogs.{i[:-3]}")
-            print(f"Load cog: Cogs.{i[:-3]}")
+            h.create_log(f"Load cog: Cogs.{i[:-3]}")
     except commands.errors.NoEntryPointError:
         pass
 
@@ -38,12 +36,12 @@ async def on_ready():
         activity=discord.Streaming(
             name="!help",
             platform="Twitch",
-            details=f"{json_data['prefix']}help",
+            details=f"{h.json_data['prefix']}help",
             game="Create bot",
             url="https://www.twitch.tv/andrew_k9"
         )
     )
-    print("Ready")
+    h.create_log("Ready")
 
 
 minify_text = lambda txt: f'{txt[:-900]}...\n# ...и ещё {len(txt.replace(txt[:-900], ""))} символов' if len(
@@ -52,7 +50,8 @@ minify_text = lambda txt: f'{txt[:-900]}...\n# ...и ещё {len(txt.replace(txt
 
 @bot.command(aliases=['eval', 'aeval', 'evaluate', 'выполнить', 'exec', 'execute', 'code'])
 async def __eval(ctx, *, content):
-    if ctx.author.id not in json_data['owners']:
+    await ctx.message.delete()
+    if ctx.author.id not in h.json_data['owners']:
         return await ctx.send("Кыш!")
     code = "\n".join(content.split("\n")[1:])[:-3] if content.startswith("```") and content.endswith("```") else content
     standard_args = {
@@ -91,6 +90,6 @@ async def __eval(ctx, *, content):
 
 
 try:
-    bot.run(json_data['token'])
+    bot.run(h.json_data['token'])
 except aiohttp.ClientConnectionError:
-    print("Возможно вы не в сети, проверте ваше интернет соеденение и попробуйте ещё раз")
+    h.create_log("Возможно вы не в сети, проверте ваше интернет соеденение и попробуйте ещё раз", "error")

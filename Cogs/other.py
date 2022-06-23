@@ -11,6 +11,7 @@ class OtherCommand(commands.Cog):
 
     @commands.command()
     async def help(self, ctx, *, cmd_input=None):
+        await ctx.message.delete()
         if cmd_input is None:
             emb = discord.Embed(title="Команды:", colour=discord.colour.Colour.green())
             emb.set_footer(
@@ -33,14 +34,16 @@ class OtherCommand(commands.Cog):
 
     @commands.command(usage='ping', brief='Показывает пинг бота')
     async def ping(self, ctx):
+        await ctx.message.delete()
         await ctx.send(f"Понг! Задержка {round(self.client.latency * 1000)} мс")
 
     @commands.command(usage='profile', brief='Показывает ваш профиль')
     async def profile(self, ctx: commands.Context, person: discord.Member = None):
+        await ctx.message.delete()
         if person == None:
             person = ctx.author
         info = h.get_profile_info(person)
-        print(info)
+        h.create_log(info, "debug")
         emb = discord.Embed(title="Ваш профиль" if person == None else f"Профиль {person.display_name}",
                             color=person.top_role.colour)
         emb.set_author(name=str(person))
@@ -65,14 +68,15 @@ class OtherCommand(commands.Cog):
 
     @commands.command(usage='set <about | picture> <значение>')
     async def set(self, ctx: commands.Context, colum: str, *, val: str = None):
+        await ctx.message.delete()
         if colum in ('about', 'a'):
             h.do_to_database("UPDATE profile SET about=? WHERE name=?", val, ctx.author.id)
-            await ctx.send(f"Значение \"Обо мне\" изменено на {val}" if val is not None else "Значение")
+            await ctx.send(f"Значение \"Обо мне\" изменено на {val}" if val is not None else "Значение", delete_after=h.json_data['delete_after']['command'])
         elif colum in ('picture', 'pic', 'p'):
             h.do_to_database("UPDATE profile SET pic=? WHERE name=?", val, ctx.author.id)
-            await ctx.send("Картинка изменена")
+            await ctx.send("Картинка изменена", delete_after=h.json_data['delete_after']['command'])
         else:
-            await ctx.send('Неправильный аттрибут. Возможные значения: info | picture')
+            await ctx.send('Неправильный аттрибут. Возможные значения: info | picture', delete_after=h.json_data['delete_after']['error'])
 
     # TODO vote
 
