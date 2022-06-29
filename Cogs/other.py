@@ -100,7 +100,10 @@ class OtherCommand(commands.Cog):
             await reaction.remove(user)
             if reaction.emoji == stop_emoji:
                 if user.id == ctx.author.id:
-                    emb = h.embed_builder(title="Итоги:", color=discord.Color.red())
+                    break
+        emb = h.embed_builder(title="Итоги:", color=discord.Color.red())
+        for i in h.get_max_from_value(votes):
+            pass
 
 
 def setup(client):

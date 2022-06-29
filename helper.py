@@ -49,7 +49,13 @@ def create_log(message: str, code: str = "ok", logged: bool = True):
 
 
 def get_max_from_value(variant: dict):
-    out = ""
+    out = []
     while len(variant) != 0:
-        max_value = 0
+        max_value = list(variant.keys())[0]
+        for i in variant.keys():
+            if variant[i] > variant[max_value]:
+                max_value = i
+        out.append(max_value)
+        variant.pop(max_value)
+    return out
 
