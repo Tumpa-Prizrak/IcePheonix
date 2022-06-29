@@ -4,7 +4,7 @@ import helper as h
 
 
 class OtherCommand(commands.Cog):
-    def __init__(self, client):
+    def __init__(self, client: commands.Bot):
         self.client = client
         self.runame = 'Остальное'
         self.invisible = False
@@ -44,7 +44,7 @@ class OtherCommand(commands.Cog):
             person = ctx.author
         info = h.get_profile_info(person)
         h.create_log(info, "debug")
-        emb = discord.Embed(title="Ваш профиль" if person == None else f"Профиль {person.display_name}",
+        emb = discord.Embed(title="Ваш профиль" if person is None else f"Профиль {person.display_name}",
                             color=person.top_role.colour)
         emb.set_author(name=str(person))
         emb.set_thumbnail(url=person.avatar_url)
@@ -78,7 +78,29 @@ class OtherCommand(commands.Cog):
         else:
             await ctx.send('Неправильный аттрибут. Возможные значения: info | picture', delete_after=h.json_data['delete_after']['error'])
 
-    # TODO vote
+    @commands.command(usage='vote <Выбор один> | <Выбор два> | [...] | [Вариант десять]')
+    async def vote(self, ctx: commands.Context, *, variants: str):
+        emojis = ['0️⃣', '1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣', '🔟']
+        stop_emoji = '⛔'
+        votes = dict()
+        emb = h.embed_builder(f"Голосование от {ctx.author.name}", desc=f"Создатель опроса может нажать {stop_emoji} чтобы завершить опрос")
+        variants_list = list(map(lambda x: "**" + x + "**", variants.split(" | ")))
+        for i in enumerate(variants_list):
+            emb.add_field(name=emojis[i[0]] + " | 0 votes", value=i[1], inline=False)
+        mess = await ctx.send(embed=emb)
+        for i in range(len(variants_list) - 1):
+            await mess.add_reaction(emojis[i])
+            votes.update({emojis[i]: 0})
+        await mess.add_reaction(stop_emoji)
+        while True:
+            reaction, user = await self.client.wait_for("reaction_add",
+    check=lambda r, _: r.message == mess and (r.emoji in emojis or r.emoji == stop_emoji))
+            if reaction.me:
+                continue
+            await reaction.remove(user)
+            if reaction.emoji == stop_emoji:
+                if user.id == ctx.author.id:
+                    emb = h.embed_builder(title="Итоги:", color=discord.Color.red())
 
 
 def setup(client):

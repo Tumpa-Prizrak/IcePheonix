@@ -46,3 +46,10 @@ def create_log(message: str, code: str = "ok", logged: bool = True):
     if logged:
         with open(f"logs/log_{datetime.date.today()}.txt", "a", encoding="UTF-8") as file:
             file.write("\n" + out)
+
+
+def get_max_from_value(variant: dict):
+    out = ""
+    while len(variant) != 0:
+        max_value = 0
+

@@ -1,0 +1,41 @@
+
+[OK][2022-06-29 13:27:48]: Load cog: Cogs.moderation
+[OK][2022-06-29 13:27:48]: Load cog: Cogs.other
+[OK][2022-06-29 13:27:48]: Load cog: Cogs.reactions
+[OK][2022-06-29 13:27:53]: Ready
+[OK][2022-06-29 13:37:20]: Load cog: Cogs.moderation
+[OK][2022-06-29 13:37:20]: Load cog: Cogs.other
+[OK][2022-06-29 13:37:20]: Load cog: Cogs.reactions
+[OK][2022-06-29 13:37:25]: Ready
+[OK][2022-06-29 13:38:46]: Load cog: Cogs.moderation
+[OK][2022-06-29 13:38:46]: Load cog: Cogs.other
+[OK][2022-06-29 13:38:46]: Load cog: Cogs.reactions
+[OK][2022-06-29 13:38:50]: Ready
+[OK][2022-06-29 13:41:29]: Load cog: Cogs.moderation
+[OK][2022-06-29 13:41:29]: Load cog: Cogs.other
+[OK][2022-06-29 13:41:29]: Load cog: Cogs.reactions
+[OK][2022-06-29 13:41:33]: Ready
+[OK][2022-06-29 13:42:47]: Load cog: Cogs.moderation
+[OK][2022-06-29 13:42:47]: Load cog: Cogs.other
+[OK][2022-06-29 13:42:47]: Load cog: Cogs.reactions
+[OK][2022-06-29 13:42:52]: Ready
+[OK][2022-06-29 13:50:23]: Load cog: Cogs.moderation
+[OK][2022-06-29 13:50:23]: Load cog: Cogs.other
+[OK][2022-06-29 13:50:23]: Load cog: Cogs.reactions
+[OK][2022-06-29 13:50:27]: Ready
+[OK][2022-06-29 13:50:46]: Load cog: Cogs.moderation
+[OK][2022-06-29 13:50:46]: Load cog: Cogs.other
+[OK][2022-06-29 13:50:46]: Load cog: Cogs.reactions
+[OK][2022-06-29 13:50:49]: Ready
+[OK][2022-06-29 13:50:56]: Load cog: Cogs.moderation
+[OK][2022-06-29 13:50:56]: Load cog: Cogs.other
+[OK][2022-06-29 13:50:56]: Load cog: Cogs.reactions
+[OK][2022-06-29 13:50:59]: Ready
+[OK][2022-06-29 13:52:04]: Load cog: Cogs.moderation
+[OK][2022-06-29 13:52:04]: Load cog: Cogs.other
+[OK][2022-06-29 13:52:04]: Load cog: Cogs.reactions
+[OK][2022-06-29 13:52:07]: Ready
+[OK][2022-06-29 13:52:38]: Load cog: Cogs.moderation
+[OK][2022-06-29 13:52:38]: Load cog: Cogs.other
+[OK][2022-06-29 13:52:38]: Load cog: Cogs.reactions
+[OK][2022-06-29 13:52:44]: Ready
