@@ -71,39 +71,51 @@ class OtherCommand(commands.Cog):
         await ctx.message.delete()
         if colum in ('about', 'a'):
             h.do_to_database("UPDATE profile SET about=? WHERE name=?", val, ctx.author.id)
-            await ctx.send(f"Значение \"Обо мне\" изменено на {val}" if val is not None else "Значение", delete_after=h.json_data['delete_after']['command'])
+            await ctx.send(f"Значение \"Обо мне\" изменено на {val}" if val is not None else "Значение",
+                           delete_after=h.json_data['delete_after']['command'])
         elif colum in ('picture', 'pic', 'p'):
             h.do_to_database("UPDATE profile SET pic=? WHERE name=?", val, ctx.author.id)
             await ctx.send("Картинка изменена", delete_after=h.json_data['delete_after']['command'])
         else:
-            await ctx.send('Неправильный аттрибут. Возможные значения: info | picture', delete_after=h.json_data['delete_after']['error'])
+            await ctx.send('Неправильный аттрибут. Возможные значения: info | picture',
+                           delete_after=h.json_data['delete_after']['error'])
 
-    @commands.command(usage='vote <Выбор один> | <Выбор два> | [...] | [Вариант десять]')
+    @commands.command(usage='vote <Вариант один> | <Вариант два> | [...] | [Вариант десять]')
     async def vote(self, ctx: commands.Context, *, variants: str):
         emojis = ['0️⃣', '1️⃣', '2️⃣', '3️⃣', '4️⃣', '5️⃣', '6️⃣', '7️⃣', '8️⃣', '9️⃣', '🔟']
         stop_emoji = '⛔'
         votes = dict()
-        emb = h.embed_builder(f"Голосование от {ctx.author.name}", desc=f"Создатель опроса может нажать {stop_emoji} чтобы завершить опрос")
+        already_voted = list()
+        emb = h.embed_builder(f"Голосование от {ctx.author.name}",
+                              desc=f"Создатель опроса может нажать {stop_emoji} чтобы завершить опрос")
         variants_list = list(map(lambda x: "**" + x + "**", variants.split(" | ")))
+        if len(variants_list) < 2 or len(variants_list) > 10:
+            return await ctx.send("Неверное количество вариантов", delete_after=h.json_data['delete_after']['error'])
         for i in enumerate(variants_list):
             emb.add_field(name=emojis[i[0]] + " | 0 votes", value=i[1], inline=False)
         mess = await ctx.send(embed=emb)
-        for i in range(len(variants_list) - 1):
+        for i in range(len(variants_list)):
             await mess.add_reaction(emojis[i])
             votes.update({emojis[i]: 0})
         await mess.add_reaction(stop_emoji)
         while True:
             reaction, user = await self.client.wait_for("reaction_add",
-    check=lambda r, _: r.message == mess and (r.emoji in emojis or r.emoji == stop_emoji))
-            if reaction.me:
-                continue
+                                                        check=lambda r, u: r.message == mess and (
+                                                                r.emoji in emojis or r.emoji == stop_emoji) and not u.bot)
             await reaction.remove(user)
-            if reaction.emoji == stop_emoji:
-                if user.id == ctx.author.id:
-                    break
-        emb = h.embed_builder(title="Итоги:", color=discord.Color.red())
-        for i in h.get_max_from_value(votes):
-            pass
+            if reaction.emoji == stop_emoji and user.id == ctx.author.id:
+                break
+            votes.update({reaction.emoji: votes[reaction.emoji] + 1})
+            emb = h.embed_builder(f"Голосование от {ctx.author.name}",
+                                  desc=f"Создатель опроса может нажать {stop_emoji} чтобы завершить опрос")
+            for i in enumerate(variants_list):
+                emb.add_field(name=f"{emojis[i[0]]} | {votes[emojis[i[0]]]} votes", value=i[1], inline=False)
+            await mess.edit(embed=emb)
+        await mess.clear_reactions()
+        emb.color = discord.colour.Color.red()
+        emb.description = ""
+        emb.title = "Голосование завершено"
+        await mess.edit(embed=emb)
 
 
 def setup(client):

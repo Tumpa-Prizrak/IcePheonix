@@ -34,9 +34,15 @@ def do_to_database(command: str, *options, if_short: bool = True):
 
 
 def get_profile_info(person: int):
-    if not do_to_database("SELECT * FROM profile WHERE name = ?", person.id):
-        do_to_database("INSERT INTO profile values (?, ?, ?)", person.id, None, None)
-    return do_to_database("SELECT * FROM profile WHERE name = ?", person.id)
+    if not do_to_database("SELECT * FROM profile WHERE name = ?", person):
+        do_to_database("INSERT INTO profile values (?, ?, ?)", person, None, None)
+    return do_to_database("SELECT * FROM profile WHERE name = ?", person)
+
+
+def get_guild_settings(guild: int):
+    if not do_to_database("SELECT * FROM server_settings WHERE guild_id = ?", guild):
+        do_to_database("INSERT INTO server_settings values (?, ?)", guild, None)
+    return do_to_database("SELECT * FROM server_settings WHERE guild_id = ?", guild)
 
 
 def create_log(message: str, code: str = "ok", logged: bool = True):

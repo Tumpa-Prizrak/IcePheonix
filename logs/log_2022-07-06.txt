@@ -1,0 +1,37 @@
+
+[OK][2022-07-06 20:09:33]: Load cog: Cogs.events
+[OK][2022-07-06 20:09:33]: Load cog: Cogs.moderation
+[OK][2022-07-06 20:09:33]: Load cog: Cogs.other
+[OK][2022-07-06 20:09:33]: Load cog: Cogs.reactions
+[OK][2022-07-06 20:09:33]: Load cog: Cogs.settings
+[OK][2022-07-06 20:09:42]: Ready
+[OK][2022-07-06 20:11:02]: Load cog: Cogs.events
+[OK][2022-07-06 20:11:02]: Load cog: Cogs.moderation
+[OK][2022-07-06 20:11:02]: Load cog: Cogs.other
+[OK][2022-07-06 20:11:02]: Load cog: Cogs.reactions
+[OK][2022-07-06 20:11:02]: Load cog: Cogs.settings
+[OK][2022-07-06 20:11:07]: Ready
+[OK][2022-07-06 20:16:12]: Load cog: Cogs.events
+[OK][2022-07-06 20:16:12]: Load cog: Cogs.moderation
+[OK][2022-07-06 20:16:12]: Load cog: Cogs.other
+[OK][2022-07-06 20:16:12]: Load cog: Cogs.reactions
+[OK][2022-07-06 20:16:12]: Load cog: Cogs.settings
+[OK][2022-07-06 20:16:17]: Ready
+[OK][2022-07-06 20:18:02]: Load cog: Cogs.events
+[OK][2022-07-06 20:18:02]: Load cog: Cogs.moderation
+[OK][2022-07-06 20:18:02]: Load cog: Cogs.other
+[OK][2022-07-06 20:18:02]: Load cog: Cogs.reactions
+[OK][2022-07-06 20:18:02]: Load cog: Cogs.settings
+[OK][2022-07-06 20:18:07]: Ready
+[OK][2022-07-06 20:19:51]: Load cog: Cogs.events
+[OK][2022-07-06 20:19:51]: Load cog: Cogs.moderation
+[OK][2022-07-06 20:19:51]: Load cog: Cogs.other
+[OK][2022-07-06 20:19:51]: Load cog: Cogs.reactions
+[OK][2022-07-06 20:19:51]: Load cog: Cogs.settings
+[OK][2022-07-06 20:20:09]: Ready
+[OK][2022-07-06 20:24:42]: Load cog: Cogs.events
+[OK][2022-07-06 20:24:42]: Load cog: Cogs.moderation
+[OK][2022-07-06 20:24:42]: Load cog: Cogs.other
+[OK][2022-07-06 20:24:42]: Load cog: Cogs.reactions
+[OK][2022-07-06 20:24:42]: Load cog: Cogs.settings
+[OK][2022-07-06 20:24:52]: Ready
