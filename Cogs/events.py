@@ -27,6 +27,86 @@ class Events(commands.Cog):
         emb.set_thumbnail(url=member.avatar_url)
         await self.client.get_channel(setts[1]).send(embed=emb)
 
+    @commands.Cog.listener()
+    async def on_message_delete(self, guild: discord.Guild):
+        h.get_guild_settings(guild.id)
+
+    @commands.Cog.listener()
+    async def on_message_edit(self, guild: discord.Guild):
+        pass
+
+    @commands.Cog.listener()
+    async def on_private_channel_delete(self, guild: discord.Guild):
+        pass
+
+    @commands.Cog.listener()
+    async def on_private_channel_create(self, guild: discord.Guild):
+        pass
+
+    @commands.Cog.listener()
+    async def on_private_channel_update(self, guild: discord.Guild):
+        pass
+
+    @commands.Cog.listener()
+    async def on_guild_channel_delete(self, guild: discord.Guild):
+        pass
+
+    @commands.Cog.listener()
+    async def on_guild_channel_create(self, guild: discord.Guild):
+        pass
+
+    @commands.Cog.listener()
+    async def on_guild_channel_update(self, guild: discord.Guild):
+        pass
+
+    @commands.Cog.listener()
+    async def on_webhooks_update(self, guild: discord.Guild):
+        pass
+
+    @commands.Cog.listener()
+    async def on_member_update(self, guild: discord.Guild):
+        pass
+
+    @commands.Cog.listener()
+    async def on_guild_role_create(self, guild: discord.Guild):
+        pass
+
+    @commands.Cog.listener()
+    async def on_guild_role_delete(self, guild: discord.Guild):
+        pass
+
+    @commands.Cog.listener()
+    async def on_guild_role_update(self, guild: discord.Guild):
+        pass
+
+    @commands.Cog.listener()
+    async def on_guild_emojis_update(self, guild: discord.Guild):
+        pass
+
+    @commands.Cog.listener()
+    async def on_guild_available(self, guild: discord.Guild):
+        pass
+
+    @commands.Cog.listener()
+    async def on_guild_unavailable(self, guild: discord.Guild):
+        pass
+
+    @commands.Cog.listener()
+    async def on_member_ban(self, guild: discord.Guild):
+        pass
+
+    @commands.Cog.listener()
+    async def on_member_unban(self, guild: discord.Guild):
+        pass
+
+    @commands.Cog.listener()
+    async def on_invite_create(self, guild: discord.Guild):
+        pass
+
+    @commands.Cog.listener()
+    async def on_invite_delete(self, guild: discord.Guild):
+        pass
+
 
 def setup(client):
     client.add_cog(Events(client))

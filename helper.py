@@ -41,7 +41,7 @@ def get_profile_info(person: int):
 
 def get_guild_settings(guild: int):
     if not do_to_database("SELECT * FROM server_settings WHERE guild_id = ?", guild):
-        do_to_database("INSERT INTO server_settings values (?, ?)", guild, None)
+        do_to_database("INSERT INTO server_settings values (?, ?, ?)", guild, None, None)
     return do_to_database("SELECT * FROM server_settings WHERE guild_id = ?", guild)
 
 
