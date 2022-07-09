@@ -3,7 +3,7 @@ from discord.ext import commands
 import aiohttp
 from random import randint
 import typing
-import helper as h
+import helper as help
 
 
 class ReactionsCommand(commands.Cog):
@@ -21,17 +21,17 @@ class ReactionsCommand(commands.Cog):
                 title=f"Параметр {qu.format(chel if error.param.name == 'person' else error.param.name)} пропущен",
                 description=f'Правильное использование команды: {ctx.command.usage}',
                 colour=discord.colour.Colour.red())
-            await ctx.send(embed=emb, delete_after=h.json_data['delete_after']['error'])
+            await ctx.send(embed=emb, delete_after=help.json_data['delete_after']['error'])
         else:
             raise error
 
     async def get_gif(self, param):
         async with self.session.get(  # TODO change api?
-                f"https://g.tenor.com/v1/search?q={param.replace(' ', '%20')}&key={h.json_data['apikey']}&limit={str(h.json_data['limit'])}") as r:  # TODO replace apikey to new
+                f"https://g.tenor.com/v1/search?q={param.replace(' ', '%20')}&key={help.json_data['apikey']}&limit={str(help.json_data['limit'])}") as r:  # TODO replace apikey to new
             if r.status == 200:
                 while 1:
                     try:
-                        return (await r.json())["results"][randint(0, h.json_data["limit"])]["media"][0]['gif']['url']
+                        return (await r.json())["results"][randint(0, help.json_data["limit"])]["media"][0]['gif']['url']
                     except IndexError:
                         continue
             else:
@@ -42,11 +42,11 @@ class ReactionsCommand(commands.Cog):
         if target is not None:
             if author == target:
                 return discord.Embed(title="Вы не можете сделать это с собой :sob:",
-                                     colour=discord.colour.Colour.red())
+                                    colour=discord.colour.Colour.red())
         if not isinstance(r, int):
             if type(target) == str:
                 return discord.Embed(title=f"{author.name} {action} {target}" + f" со словами {words}" if words is not None else "",
-                                     colour=discord.colour.Colour.green()).set_image(url=r)
+                                    colour=discord.colour.Colour.green()).set_image(url=r)
             else:
                 return discord.Embed(title=f"{author.name} {action} {target.name if target is not None else ''}" + f"{'со словами' + words if words is not None else ''}",
                                      colour=discord.colour.Colour.green()).set_image(url=r)

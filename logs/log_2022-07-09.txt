@@ -1,0 +1,79 @@
+
+[OK][2022-07-09 09:17:55]: Load cog: Cogs.events
+[OK][2022-07-09 09:17:55]: Load cog: Cogs.moderation
+[OK][2022-07-09 09:17:55]: Load cog: Cogs.other
+[OK][2022-07-09 09:17:55]: Load cog: Cogs.reactions
+[OK][2022-07-09 09:17:55]: Load cog: Cogs.settings
+[OK][2022-07-09 09:17:58]: Ready
+[OK][2022-07-09 09:42:24]: Load cog: Cogs.events
+[OK][2022-07-09 09:42:24]: Load cog: Cogs.moderation
+[OK][2022-07-09 09:42:24]: Load cog: Cogs.other
+[OK][2022-07-09 09:42:24]: Load cog: Cogs.reactions
+[OK][2022-07-09 09:42:24]: Load cog: Cogs.settings
+[OK][2022-07-09 09:42:27]: Ready
+[OK][2022-07-09 11:03:44]: Load cog: Cogs.events
+[OK][2022-07-09 11:03:44]: Load cog: Cogs.moderation
+[OK][2022-07-09 11:03:44]: Load cog: Cogs.other
+[OK][2022-07-09 11:03:45]: Load cog: Cogs.reactions
+[OK][2022-07-09 11:03:45]: Load cog: Cogs.settings
+[OK][2022-07-09 11:03:49]: Ready
+[OK][2022-07-09 11:05:26]: Load cog: Cogs.events
+[OK][2022-07-09 11:05:26]: Load cog: Cogs.moderation
+[OK][2022-07-09 11:05:26]: Load cog: Cogs.other
+[OK][2022-07-09 11:05:26]: Load cog: Cogs.reactions
+[OK][2022-07-09 11:05:26]: Load cog: Cogs.settings
+[OK][2022-07-09 11:05:30]: Ready
+[2022-07-09 11:25:32][INFO]: Load cog: Cogs.events
+[2022-07-09 11:25:32][INFO]: Load cog: Cogs.moderation
+[2022-07-09 11:25:32][INFO]: Load cog: Cogs.other
+[2022-07-09 11:25:32][INFO]: Load cog: Cogs.reactions
+[2022-07-09 11:25:32][INFO]: Load cog: Cogs.settings
+[2022-07-09 11:25:35][READY]: Logged in as IcePhoenix#8807(ID: 965252264501575821)
+[2022-07-09 11:26:18][INFO]: Load cog: Cogs.events
+[2022-07-09 11:26:18][INFO]: Load cog: Cogs.moderation
+[2022-07-09 11:26:18][INFO]: Load cog: Cogs.other
+[2022-07-09 11:26:18][INFO]: Load cog: Cogs.reactions
+[2022-07-09 11:26:18][INFO]: Load cog: Cogs.settings
+[2022-07-09 11:26:21][READY]: Logged in as IcePhoenix#8807(ID: 965252264501575821)
+[2022-07-09 11:27:52][INFO]: Load cog: Cogs.events
+[2022-07-09 11:27:52][INFO]: Load cog: Cogs.moderation
+[2022-07-09 11:27:52][INFO]: Load cog: Cogs.other
+[2022-07-09 11:27:52][INFO]: Load cog: Cogs.reactions
+[2022-07-09 11:27:52][INFO]: Load cog: Cogs.settings
+[2022-07-09 11:27:56][READY]: Logged in as IcePhoenix#8807(ID: 965252264501575821)
+[2022-07-09 11:28:19][INFO]: Load cog: Cogs.events
+[2022-07-09 11:28:19][INFO]: Load cog: Cogs.moderation
+[2022-07-09 11:28:19][INFO]: Load cog: Cogs.other
+[2022-07-09 11:28:19][INFO]: Load cog: Cogs.reactions
+[2022-07-09 11:28:19][INFO]: Load cog: Cogs.settings
+[2022-07-09 11:28:22][READY]: Logged in as IcePhoenix#8807(ID: 965252264501575821)
+[2022-07-09 11:37:55][INFO]: Load cog: Cogs.events
+[2022-07-09 11:37:55][INFO]: Load cog: Cogs.moderation
+[2022-07-09 11:37:55][INFO]: Load cog: Cogs.other
+[2022-07-09 11:37:56][INFO]: Load cog: Cogs.reactions
+[2022-07-09 11:37:56][INFO]: Load cog: Cogs.settings
+[2022-07-09 11:37:59][READY]: Logged in as IcePhoenix#8807(ID: 965252264501575821)
+[2022-07-09 11:44:44][INFO]: Load cog: Cogs.events
+[2022-07-09 11:44:44][INFO]: Load cog: Cogs.moderation
+[2022-07-09 11:44:44][INFO]: Load cog: Cogs.other
+[2022-07-09 11:44:44][INFO]: Load cog: Cogs.reactions
+[2022-07-09 11:44:44][INFO]: Load cog: Cogs.settings
+[2022-07-09 11:44:48][READY]: Logged in as IcePhoenix#8807(ID: 965252264501575821)
+[2022-07-09 11:48:37][INFO]: Load cog: Cogs.events
+[2022-07-09 11:48:37][INFO]: Load cog: Cogs.moderation
+[2022-07-09 11:48:37][INFO]: Load cog: Cogs.other
+[2022-07-09 11:48:37][INFO]: Load cog: Cogs.reactions
+[2022-07-09 11:48:37][INFO]: Load cog: Cogs.settings
+[2022-07-09 11:48:41][READY]: Logged in as IcePhoenix#8807(ID: 965252264501575821)
+[2022-07-09 11:49:09][INFO]: Load cog: Cogs.events
+[2022-07-09 11:49:10][INFO]: Load cog: Cogs.moderation
+[2022-07-09 11:49:10][INFO]: Load cog: Cogs.other
+[2022-07-09 11:49:10][INFO]: Load cog: Cogs.reactions
+[2022-07-09 11:49:10][INFO]: Load cog: Cogs.settings
+[2022-07-09 11:49:13][READY]: Logged in as IcePhoenix#8807(ID: 965252264501575821)
+[2022-07-09 11:51:25][INFO]: Load cog: Cogs.events
+[2022-07-09 11:51:25][INFO]: Load cog: Cogs.moderation
+[2022-07-09 11:51:25][INFO]: Load cog: Cogs.other
+[2022-07-09 11:51:25][INFO]: Load cog: Cogs.reactions
+[2022-07-09 11:51:25][INFO]: Load cog: Cogs.settings
+[2022-07-09 11:51:28][READY]: Logged in as IcePhoenix#8807(ID: 965252264501575821)
