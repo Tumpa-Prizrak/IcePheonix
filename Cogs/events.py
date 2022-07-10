@@ -1,4 +1,3 @@
-from dis import dis
 import discord, datetime
 from discord.abc import GuildChannel
 from discord.ext import commands
@@ -149,7 +148,7 @@ class Events(commands.Cog):
         await self.client.get_channel(settings[2]).send(str(after))
 
     @commands.Cog.listener()
-    async def on_member_ban(self, guild: discord.Guild, user: discord.Member | discord.User):
+    async def on_member_ban(self, guild: discord.Guild, user: discord.User):
         settings = help.get_guild_settings(guild.id)
         if settings[2] is None:
             return
@@ -157,7 +156,7 @@ class Events(commands.Cog):
         await self.client.get_channel(settings[2]).send(str(user))
 
     @commands.Cog.listener()
-    async def on_member_unban(self, guild: discord.Guild, user: discord.Member | discord.User):
+    async def on_member_unban(self, guild: discord.Guild, user: discord.User):
         settings = help.get_guild_settings(guild.id)
         if settings[2] is None:
             return
