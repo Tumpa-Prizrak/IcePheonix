@@ -8,7 +8,7 @@ class ModerationCommand(commands.Cog):
     def __init__(self, client: commands.Bot):
         self.client = client
         self.someShit = {
-            "user ": "<Человек>",
+            "user": "<Человек>",
             "reason": "<Причина>"
         }
         self.runame = 'Модерация'
@@ -38,15 +38,15 @@ class ModerationCommand(commands.Cog):
                                 'аккаунта вплоть до его разбана. Требуется право ban_members (банить участников) '
                                 'как у бота, так и у вызвавшего команду')
     @commands.has_permissions(ban_members=True)
-    async def ban(self, ctx: commands.Context, user : discord.Member, *, reason="Bad guy"):
+    async def ban(self, ctx: commands.Context, user: discord.Member, *, reason="Bad guy"):
         await ctx.message.delete()
-        if user  == ctx.author:
+        if user == ctx.author:
             emb = discord.Embed(title="Вы не можете сделать это с собой  :sob:", colour=discord.colour.Colour.red())
             return await ctx.send(embed=emb, delete_after=help.json_data['delete_after']['error'])
-        if ctx.author.top_role.position <= user .top_role.position or ctx.guild.owner != ctx.author:
+        if ctx.author.top_role.position <= user.top_role.position or ctx.guild.owner != ctx.author:
             raise commands.MissingPermissions()
         await user.ban(reason=reason)
-        emb = discord.Embed(title=f"**{user .display_name}** был забанен", colour=discord.colour.Color.green())
+        emb = discord.Embed(title=f"**{user.display_name}** был забанен", colour=discord.colour.Color.green())
         await ctx.send(embed=emb, delete_after=help.json_data['delete_after']['command'])
 
     @commands.command(usage='kick <Участник> [причина]', brief='Выгнать участника с сервера',
@@ -56,13 +56,13 @@ class ModerationCommand(commands.Cog):
     @commands.has_permissions(kick_members=True)
     async def kick(self, ctx: commands.Context, user: discord.Member, *, reason: str = "Bad guy"):
         await ctx.message.delete()
-        if user  == ctx.author:
+        if user == ctx.author:
             emb = discord.Embed(title="Вы не можете сделать это с собой  :sob:", colour=discord.colour.Colour.red())
             return await ctx.send(embed=emb, delete_after=help.json_data['delete_after']['error'])
-        if ctx.author.top_role.position <= user .top_role.position or ctx.guild.owner != ctx.author:
+        if ctx.author.top_role.position <= user.top_role.position or ctx.guild.owner != ctx.author:
             raise commands.MissingPermissions()
-        await user .kick(reason=reason)
-        emb = discord.Embed(title=f"**{user .display_name}** был кикнут", colour=discord.colour.Color.green())
+        await user.kick(reason=reason)
+        emb = discord.Embed(title=f"**{user.display_name}** был кикнут", colour=discord.colour.Color.green())
         await ctx.send(embed=emb, delete_after=help.json_data['delete_after']['command'])
 
     @commands.command(usage='warn <Участник> <причина>', brief='Выдать участнику предупреждение',
@@ -70,20 +70,20 @@ class ModerationCommand(commands.Cog):
                                 'командой  warns. Требуется право manage_roles(управлять ролями) у вызвавшего '
                                 'команду.')
     @commands.has_permissions(manage_roles=True)
-    async def warn(self, ctx: commands.Context, user : discord.Member, *, reason: str):
+    async def warn(self, ctx: commands.Context, user: discord.Member, *, reason: str):
         await ctx.message.delete()
         help.database("INSERT INTO warns (person, server, warn, moderator) VALUES (?, ?, ?, ?)", user.id, ctx.guild.id,
                       reason, ctx.author.id)
-        await ctx.send(f"{user .mention} было выдано предупреждение по причине \"{reason}\" модератором {ctx.author.mention}", delete_after=help.json_data['delete_after']['command'])
+        await ctx.send(f"{user.mention} было выдано предупреждение по причине \"{reason}\" модератором {ctx.author.mention}", delete_after=help.json_data['delete_after']['command'])
 
     @commands.command(usage='warns <Участник>', brief='список предупреждений участника',
                     description='<Квина, заполни, плиз>')
-    async def warns(self, ctx: commands.Context, user : discord.Member = None):
+    async def warns(self, ctx: commands.Context, user: discord.Member = None):
         await ctx.message.delete()
-        if user  is None:
-            user  = ctx.author
+        if user is None:
+            user = ctx.author
         user_warns = help.database("SELECT * FROM warns WHERE person=? and server=?", user.id, ctx.guild.id, short=False)
-        emb = discord.Embed(title=f"\"{user .display_name}\" warns")
+        emb = discord.Embed(title=f"\"{user.display_name}\" warns")
         if not user_warns:
             emb.description = "*Пусто*"
         else:

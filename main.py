@@ -15,10 +15,10 @@ import discord
 import requests
 from discord.ext import commands, tasks
 
-import helper as help
+import helper as h
 
 bot = commands.Bot(
-    command_prefix=commands.when_mentioned_or(help.json_data['prefix']),
+    command_prefix=commands.when_mentioned_or(h.json_data['prefix']),
     intents=discord.Intents.all(),
     case_insensitive=True
 )
@@ -28,7 +28,7 @@ for i in os.listdir("Cogs/"):
     with contextlib.suppress(commands.errors.NoEntryPointError):
         if i.endswith(".py"):
             bot.load_extension(f"Cogs.{i[:-3]}")
-            help.Log.info(f"Load cog: Cogs.{i[:-3]}")
+            h.Log.info(f"Load cog: Cogs.{i[:-3]}")
 
 
 # class MyBot(commands.Bot):
@@ -62,12 +62,12 @@ async def on_ready():
         activity=discord.Streaming(
             name="!help",
             platform="Twitch",
-            details=f"{help.json_data['prefix']}help",
+            details=f"{h.json_data['prefix']}help",
             game="Creating a bot",
             url="https://www.twitch.tv/andrew_k9"
         )
     )
-    help.Log.log(f"Logged in as {bot.user}(ID: {bot.user.id})", code="ready", color=Fore.MAGENTA, style=Style.BRIGHT)
+    h.Log.log(f"Logged in as {bot.user}(ID: {bot.user.id})", code="ready", color=Fore.MAGENTA, style=Style.BRIGHT)
 
 
 def shorten_text(text: str) -> str:
@@ -85,7 +85,7 @@ async def t(ctx: commands.Context, a: int):
 @bot.command(aliases=['eval', 'aeval', 'evaluate', 'выполнить', 'exec', 'execute', 'code'])
 async def __eval(ctx, *, content):
     await ctx.message.delete()
-    if ctx.author.id not in help.json_data['owners']:
+    if ctx.author.id not in h.json_data['owners']:
         return await ctx.send("Кыш!")
     code = "\n".join(content.split("\n")[1:])[:-3] if content.startswith("```") and content.endswith("```") else content
     standard_args = {
@@ -124,6 +124,6 @@ async def __eval(ctx, *, content):
 
 
 try:
-    bot.run(help.json_data['token'])
+    bot.run(h.json_data['token'])
 except aiohttp.ClientConnectionError:
-    help.Log.error("Возможно вы не в сети, проверьте ваше интернет соеденение и попробуйте ещё раз")
+    h.Log.error("Возможно вы не в сети, проверьте ваше интернет соеденение и попробуйте ещё раз")
