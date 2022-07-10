@@ -45,7 +45,7 @@ class ModerationCommand(commands.Cog):
             return await ctx.send(embed=emb, delete_after=help.json_data['delete_after']['error'])
         if ctx.author.top_role.position <= user .top_role.position or ctx.guild.owner != ctx.author:
             raise commands.MissingPermissions()
-        await user.ban(reason=reason)
+        await user .ban(reason=reason)
         emb = discord.Embed(title=f"**{user .display_name}** был забанен", colour=discord.colour.Color.green())
         await ctx.send(embed=emb, delete_after=help.json_data['delete_after']['command'])
 
@@ -72,8 +72,8 @@ class ModerationCommand(commands.Cog):
     @commands.has_permissions(manage_roles=True)
     async def warn(self, ctx: commands.Context, user : discord.Member, *, reason: str):
         await ctx.message.delete()
-        help.database("INSERT INTO warns (person, server, warn, moderator) VALUES (?, ?, ?, ?)", user.id, ctx.guild.id,
-                      reason, ctx.author.id)
+        help.do_to_database("INSERT INTO warns (person, server, warn, moderator) VALUES (?, ?, ?, ?)",
+                        user .id, ctx.guild.id, reason, ctx.author.id)
         await ctx.send(f"{user .mention} было выдано предупреждение по причине \"{reason}\" модератором {ctx.author.mention}", delete_after=help.json_data['delete_after']['command'])
 
     @commands.command(usage='warns <Участник>', brief='список предупреждений участника',
@@ -82,23 +82,22 @@ class ModerationCommand(commands.Cog):
         await ctx.message.delete()
         if user  is None:
             user  = ctx.author
-        user_warns = help.database("SELECT * FROM warns WHERE person=? and server=?", user.id, ctx.guild.id, short=False)
+        man_warns = help.do_to_database("SELECT * FROM warns WHERE person=? and server=?", user .id, ctx.guild.id, if_short=False)
         emb = discord.Embed(title=f"\"{user .display_name}\" warns")
-        if not user_warns:
+        if not man_warns:
             emb.description = "*Пусто*"
         else:
-            emb.description = "\n".join(map(lambda x: f"#{x[0]}: \
-                               {self.client.get_user(x[4]).mention if self.client.get_user(x[4]) is not None else 'Неизвестно'} \
-                               - {x[3]}", user_warns))
+            emb.description = "\n".join(map(lambda x: f"#{x[0]}: {self.client.get_user(x[4]).mention if self.client.get_user(x[4]) is not None else 'Неизвестно'} - {x[3]}",
+                                            man_warns))
             emb.set_footer(text="#Номер нарушения: модератор - Причина")
         await ctx.send(embed=emb)
     
     @commands.command(usage='clear <количество>', brief='Очищает указанное количество сообщений', 
                     description="<Квина, заполни, плиз>")
-    async def clear(self, ctx: commands.Context, amount: int):
+    async def clear(self, ctx: commands.Context, count: int):
         await ctx.message.delete()
-        if amount <= 0: return await ctx.send("Параметр `amount` должен быть больше нуля", delete_after=help.json_data['delete_after']['error'])
-        await ctx.channel.purge(limit=amount)
+        if count <= 0: return await ctx.send("Параметр `count` должен быть больше нуля", delete_after=help.json_data['delete_after']['error'])
+        await ctx.channel.purge(limit=count)
 
     # TODO mute/unmute/tempmute
 

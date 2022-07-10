@@ -2,4 +2,3 @@ Cogs/__pycache__/
 __pycache__/
 .vscode/
 .idea/
-logs/*.txt
