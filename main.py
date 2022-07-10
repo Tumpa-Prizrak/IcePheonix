@@ -1,6 +1,7 @@
 # TODO CherryFox, Вы сделали что-то великое! В награду, я даю тебе эту клубнику!
 
 import asyncio
+import contextlib
 import datetime
 import json
 import os
@@ -14,6 +15,7 @@ import aiohttp
 import discord
 import requests
 from discord.ext import commands, tasks
+from discord.ext.commands import NoEntryPointError
 
 import helper as h
 
@@ -25,7 +27,7 @@ bot = commands.Bot(
 
 # Load Cogs
 for i in os.listdir("Cogs/"):
-    try:
+    with contextlib.supress(NoEntryPointError):
         if i.endswith(".py"):
             bot.load_extension(f"Cogs.{i[:-3]}")
             h.Log.info(f"Load cog: Cogs.{i[:-3]}")
