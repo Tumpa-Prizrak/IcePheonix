@@ -70,11 +70,11 @@ class OtherCommand(commands.Cog):
     async def set(self, ctx: commands.Context, colum: str, *, val: str = None):
         await ctx.message.delete()
         if colum in ('about', 'a'):
-            help.database("UPDATE profile SET about=? WHERE name=?", val, ctx.author.id)
+            help.do_to_database("UPDATE profile SET about=? WHERE name=?", val, ctx.author.id)
             await ctx.send(f"Значение \"Обо мне\" изменено на {val}" if val is not None else "Значение",
                         delete_after=help.json_data['delete_after']['command'])
         elif colum in ('picture', 'pic', 'p'):
-            help.database("UPDATE profile SET pic=? WHERE name=?", val, ctx.author.id)
+            help.do_to_database("UPDATE profile SET pic=? WHERE name=?", val, ctx.author.id)
             await ctx.send("Картинка изменена", delete_after=help.json_data['delete_after']['command'])
         else:
             await ctx.send('Неправильный аттрибут. Возможные значения: info | picture',
@@ -86,8 +86,8 @@ class OtherCommand(commands.Cog):
         stop_emoji = '⛔'
         votes = dict()
         already_voted = list()
-        emb = help.build_embed(f"Голосование от {ctx.author.name}",
-                               desc=f"Создатель опроса может нажать {stop_emoji} чтобы завершить опрос")
+        emb = help.embed_builder(f"Голосование от {ctx.author.name}",
+                            desc=f"Создатель опроса может нажать {stop_emoji} чтобы завершить опрос")
         variants_list = list(map(lambda x: "**" + x + "**", variants.split(" | ")))
         if len(variants_list) < 2 or len(variants_list) > 10:
             return await ctx.send("Неверное количество вариантов", delete_after=help.json_data['delete_after']['error'])
@@ -106,8 +106,8 @@ class OtherCommand(commands.Cog):
             if reaction.emoji == stop_emoji and user.id == ctx.author.id:
                 break
             votes.update({reaction.emoji: votes[reaction.emoji] + 1})
-            emb = help.build_embed(f"Голосование от {ctx.author.name}",
-                                   desc=f"Создатель опроса может нажать {stop_emoji} чтобы завершить опрос")
+            emb = help.embed_builder(f"Голосование от {ctx.author.name}",
+                                desc=f"Создатель опроса может нажать {stop_emoji} чтобы завершить опрос")
             for i in enumerate(variants_list):
                 emb.add_field(name=f"{emojis[i[0]]} | {votes[emojis[i[0]]]} votes", value=i[1], inline=False)
             await mess.edit(embed=emb)
