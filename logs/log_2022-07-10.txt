@@ -1,0 +1,7 @@
+
+[2022-07-10 11:08:42][INFO]: Load cog: Cogs.events
+[2022-07-10 11:08:42][INFO]: Load cog: Cogs.moderation
+[2022-07-10 11:08:42][INFO]: Load cog: Cogs.other
+[2022-07-10 11:08:42][INFO]: Load cog: Cogs.reactions
+[2022-07-10 11:08:42][INFO]: Load cog: Cogs.settings
+[2022-07-10 11:08:46][READY]: Logged in as IcePhoenix#8807(ID: 965252264501575821)
