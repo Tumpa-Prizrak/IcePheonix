@@ -38,20 +38,20 @@ class ReactionsCommand(commands.Cog):
                 return r.status
 
     @staticmethod
-    async def build_embed(r, author, action, words, target=None):
+    async def build_embed(reaction, author, action, words, target=None):
         if target is not None:
             if author == target:
                 return discord.Embed(title="Вы не можете сделать это с собой :sob:",
                                     colour=discord.colour.Colour.red())
-        if not isinstance(r, int):
+        if not isinstance(reaction, int):
             if type(target) == str:
                 return discord.Embed(title=f"{author.name} {action} {target}" + f" со словами {words}" if words is not None else "",
-                                    colour=discord.colour.Colour.green()).set_image(url=r)
+                                    colour=discord.colour.Colour.green()).set_image(url=reaction)
             else:
                 return discord.Embed(title=f"{author.name} {action} {target.name if target is not None else ''}" + f"{'со словами' + words if words is not None else ''}",
-                                     colour=discord.colour.Colour.green()).set_image(url=r)
+                                     colour=discord.colour.Colour.green()).set_image(url=reaction)
         else:
-            return discord.Embed(title=f"Произошла неожиданная ошибка. Код ошибки: {r}",
+            return discord.Embed(title=f"Произошла неожиданная ошибка. Код ошибки: {reaction}",
                                  colour=discord.colour.Colour.red())
 
     @commands.command(usage='baka <Человек>', brief='Отругать кого-то')
