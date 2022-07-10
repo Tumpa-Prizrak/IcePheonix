@@ -45,8 +45,10 @@ class ModerationCommand(commands.Cog):
             return await ctx.send(embed=emb, delete_after=help.json_data['delete_after']['error'])
         if ctx.author.top_role.position <= user.top_role.position or ctx.guild.owner != ctx.author:
             raise commands.MissingPermissions()
+
         await user.ban(reason=reason)
         emb = discord.Embed(title=f"**{user.display_name}** был забанен", colour=discord.colour.Color.green())
+
         await ctx.send(embed=emb, delete_after=help.json_data['delete_after']['command'])
 
     @commands.command(usage='kick <Участник> [причина]', brief='Выгнать участника с сервера',
@@ -87,18 +89,17 @@ class ModerationCommand(commands.Cog):
         if not user_warns:
             emb.description = "*Пусто*"
         else:
-            emb.description = "\n".join(map(lambda x: f"#{x[0]}: \
-                               {self.client.get_user(x[4]).mention if self.client.get_user(x[4]) is not None else 'Неизвестно'} \
-                               - {x[3]}", user_warns))
+            emb.description = "\n".join(map(lambda x: f"#{x[0]}: {self.client.get_user(x[4]).mention if self.client.get_user(x[4]) is not None else 'Неизвестно'} - {x[3]}",
+                                            man_warns))
             emb.set_footer(text="#Номер нарушения: модератор - Причина")
         await ctx.send(embed=emb)
     
     @commands.command(usage='clear <количество>', brief='Очищает указанное количество сообщений', 
                     description="<Квина, заполни, плиз>")
-    async def clear(self, ctx: commands.Context, amount: int):
+    async def clear(self, ctx: commands.Context, count: int):
         await ctx.message.delete()
-        if amount <= 0: return await ctx.send("Параметр `amount` должен быть больше нуля", delete_after=help.json_data['delete_after']['error'])
-        await ctx.channel.purge(limit=amount)
+        if count <= 0: return await ctx.send("Параметр `count` должен быть больше нуля", delete_after=help.json_data['delete_after']['error'])
+        await ctx.channel.purge(limit=count)
 
     # TODO mute/unmute/tempmute
 

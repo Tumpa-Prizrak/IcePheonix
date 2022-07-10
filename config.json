@@ -5,7 +5,6 @@
     "apikey": "HB251ODSVFMT",
     "limit": 1000,
     "db": "Cogs/mysqldb.db",
-    "application_id": 965252264501575821,
     "delete_after": {
         "command": 10,
         "error": 5

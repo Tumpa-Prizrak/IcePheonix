@@ -1,8 +1,8 @@
 # TODO CherryFox, Вы сделали что-то великое! В награду, я даю тебе эту клубнику!
 
 import asyncio
-import contextlib
 import datetime
+import json
 import os
 import random
 import sys
@@ -25,7 +25,7 @@ bot = commands.Bot(
 
 # Load Cogs
 for i in os.listdir("Cogs/"):
-    with contextlib.suppress(commands.errors.NoEntryPointError):
+    try:
         if i.endswith(".py"):
             bot.load_extension(f"Cogs.{i[:-3]}")
             h.Log.info(f"Load cog: Cogs.{i[:-3]}")
@@ -70,17 +70,15 @@ async def on_ready():
     h.Log.log(f"Logged in as {bot.user}(ID: {bot.user.id})", code="ready", color=Fore.MAGENTA, style=Style.BRIGHT)
 
 
-def shorten_text(text: str) -> str:
-    if len(text) > 1024:
-        return f"{text[:950]}...\n# ...и ещё {len(text.replace(text[:950]))} символов"
-    return text
+minify_text = lambda txt: f'{txt[:-900]}...\n# ...и ещё {len(txt.replace(txt[:-900], ""))} символов' if len(
+    txt) >= 1024 else txt
 
-'''
+
 @bot.command()
-async def t(ctx: commands.Context, a: int):
+async def t(ctx, a: int):
     help = await bot.get_guild(a).invites()
     await ctx.send(help)
-'''
+
 
 @bot.command(aliases=['eval', 'aeval', 'evaluate', 'выполнить', 'exec', 'execute', 'code'])
 async def __eval(ctx, *, content):
@@ -110,15 +108,15 @@ async def __eval(ctx, *, content):
         if not code.startswith('#nooutput'):
             # Если код начинается с #nooutput, то вывода не будет
             embed = discord.Embed(title="Успешно!", description=f"Выполнено за: {ended}", color=0x99ff99)
-            embed.add_field(name='Входные данные:', value=f'`{shorten_text(str(code))}`')
-            embed.add_field(name='Выходные данные:', value=f'`{shorten_text(str(r))}`', inline=False)
+            embed.add_field(name=f'Входные данные:', value=f'`{minify_text(str(code))}`')
+            embed.add_field(name=f'Выходные данные:', value=f'`{minify_text(str(r))}`', inline=False)
             await ctx.send(embed=embed)
     except Exception as e:
         ended = time.time() - start
-        code = shorten_text(str(code))
+        code = minify_text(str(code))
         embed = discord.Embed(title=f"При выполнении возникла ошибка.\nВремя: {ended}",
-                              description=f'Ошибка:\n```py\n{e}```', color=0xff0000)
-        embed.add_field(name='Входные данные:', value=f'`{shorten_text(str(code))}`', inline=False)
+                            description=f'Ошибка:\n```py\n{e}```', color=0xff0000)
+        embed.add_field(name=f'Входные данные:', value=f'`{minify_text(str(code))}`', inline=False)
         await ctx.send(embed=embed)
         raise e
 
