@@ -30,5 +30,5 @@ class Settings(commands.Cog):
         pass
 
 
-def setup(client):
-    client.add_cog(Settings(client))
+async def setup(client):
+    await client.add_cog(Settings(client))

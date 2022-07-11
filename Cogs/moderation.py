@@ -104,5 +104,5 @@ class ModerationCommand(commands.Cog):
     # TODO mute/unmute/tempmute
 
 
-def setup(client):
-    client.add_cog(ModerationCommand(client))
+async def setup(client):
+    await client.add_cog(ModerationCommand(client))

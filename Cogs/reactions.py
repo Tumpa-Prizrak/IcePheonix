@@ -229,5 +229,5 @@ class ReactionsCommand(commands.Cog):
         await ctx.send(embed=emb)
 
 
-def setup(client):
-    client.add_cog(ReactionsCommand(client))
+async def setup(client):
+    await client.add_cog(ReactionsCommand(client))

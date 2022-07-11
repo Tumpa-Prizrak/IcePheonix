@@ -118,5 +118,5 @@ class OtherCommand(commands.Cog):
         await mess.edit(embed=emb)
 
 
-def setup(client):
-    client.add_cog(OtherCommand(client))
+async def setup(client):
+    await client.add_cog(OtherCommand(client))

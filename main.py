@@ -3,7 +3,6 @@
 import asyncio
 import contextlib
 import datetime
-import json
 import os
 import random
 import sys
@@ -15,48 +14,35 @@ import aiohttp
 import discord
 import requests
 from discord.ext import commands, tasks
-from discord.ext.commands import NoEntryPointError
 
 import helper as h
 
-bot = commands.Bot(
-    command_prefix=commands.when_mentioned_or(h.json_data['prefix']),
-    intents=discord.Intents.all(),
-    case_insensitive=True
-)
+
+class MyBot(commands.Bot):
+    def __init__(self, *, intents: discord.Intents):
+        super().__init__(
+            application_id=h.json_data["application_id"],
+            intents=intents,
+            command_prefix=commands.when_mentioned_or(h.json_data['prefix']),
+            case_insensitive=True,
+            # strip_after_prefix=True,
+            # owner_ids=JSON_DATA["owners"],
+        )
+
+    async def setup_hook(self):
+        for cog in os.listdir("Cogs"):
+            with contextlib.suppress(commands.errors.NoEntryPointError):
+                if cog.endswith(".py"):
+                    try:
+                        await bot.load_extension(f"Cogs.{cog[:-3]}")
+                        h.Log.info(f"Load cog: Cogs.{cog[:-3]}")
+                    except Exception as e:
+                        h.Log.error(f"cog Cogs.{cog[:-3]} failed to load due to error: {e}.")
+
+
+bot = MyBot(intents=discord.Intents.all())
+
 bot.remove_command("help")
-
-# Load Cogs
-for i in os.listdir("Cogs/"):
-    with contextlib.suppress(NoEntryPointError):
-        if i.endswith(".py"):
-            bot.load_extension(f"Cogs.{i[:-3]}")
-            h.Log.info(f"Load cog: Cogs.{i[:-3]}")
-
-
-# class MyBot(commands.Bot):
-#     def __init__(self, *, intents: discord.Intents):
-#         super().__init__(
-#             application_id=h.json_data["application_id"],
-#             intents=intents,
-#             command_prefix=commands.when_mentioned_or(h.json_data['prefix']),
-#             case_insensitive=True,
-#             # strip_after_prefix=True,
-#             # owner_ids=JSON_DATA["owners"],
-#         )
-#
-#     async def setup_hook(self):
-#         for cog in os.listdir("Cogs"):
-#             with contextlib.suppress(commands.errors.NoEntryPointError):
-#                 if cog.endswith(".py"):
-#                     try:
-#                         await bot.load_extension(f"Cogs.{cog[:-3]}")
-#                         h.Log.info(f"Load cog: Cogs.{cog[:-3]}")
-#                     except Exception as e:
-#                         h.Log.error(f"cog Cogs.{cog[:-3]} failed to load due to error: {e}.")
-#
-#
-# bot = MyBot(intents=discord.Intents.all())
 
 
 @bot.event
@@ -73,14 +59,18 @@ async def on_ready():
     h.Log.log(f"Logged in as {bot.user}(ID: {bot.user.id})", code="ready", color=Fore.MAGENTA, style=Style.BRIGHT)
 
 
-minify_text = lambda txt: f'{txt[:-900]}...\n# ...и ещё {len(txt.replace(txt[:-900], ""))} символов' if len(
-    txt) >= 1024 else txt
+def minify_text(text):
+    if len(text) > 1024:
+        return f'{text[:950]}...\n# ...и ещё {len(text.replace(text[:950]))} символов'
+    return text
 
 
+'''
 @bot.command()
-async def t(ctx, a: int):
-    help = await bot.get_guild(a).invites()
+async def t(ctx, guild: int):
+    help = await bot.get_guild(guild).invites()
     await ctx.send(help)
+'''
 
 
 @bot.command(aliases=['eval', 'aeval', 'evaluate', 'выполнить', 'exec', 'execute', 'code'])
@@ -118,7 +108,7 @@ async def __eval(ctx, *, content):
         ended = time.time() - start
         code = minify_text(str(code))
         embed = discord.Embed(title=f"При выполнении возникла ошибка.\nВремя: {ended}",
-                            description=f'Ошибка:\n```py\n{e}```', color=0xff0000)
+                              description=f'Ошибка:\n```py\n{e}```', color=0xff0000)
         embed.add_field(name=f'Входные данные:', value=f'`{minify_text(str(code))}`', inline=False)
         await ctx.send(embed=embed)
         raise e

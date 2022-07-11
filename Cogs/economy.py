@@ -43,5 +43,5 @@ class Economy(commands.Cog):
         await ctx.send("Выполнено :thumbsup:", delete_after=help.json_data['delete_after']['command'])
 
 
-def setup(client):
-    client.add_cog(Economy(client))
+async def setup(client):
+    await client.add_cog(Economy(client))
