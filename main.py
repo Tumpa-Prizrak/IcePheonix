@@ -61,7 +61,7 @@ async def on_ready():
 
 def minify_text(text):
     if len(text) > 1024:
-        return f'{text[:950]}...\n# ...и ещё {len(text.replace(text[:950]))} символов'
+        return f"{text[:950]}...\n# ...и ещё {len(text.replace(text[:950]))} символов"
     return text
 
 

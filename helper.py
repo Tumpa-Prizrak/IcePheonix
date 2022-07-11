@@ -10,38 +10,44 @@ from colorama import init, Fore, Style
 import discord
 import random
 
+init(autoreset=True)
+
 json_data = json.load(open("config.json"))
 
 
-def embed_builder(title: str, *, desc: str = None,
-                  color: discord.Colour = discord.Colour.green()): return discord.Embed(title=title, description=desc,
-                                                                                        color=color)
+def embed_builder(
+        title: str,
+        *,
+        description: str = None,
+        color: discord.Colour = discord.Colour.green()
+):
+    return discord.Embed(title=title, description=description, color=color)
 
 
 def database(command: str, *options, short: bool = True) -> list:
-    dbFilename = json_data["db"]
+    db_file_name = json_data["db"]
     while True:
         try:
-            conn = sqlite3.connect(dbFilename, timeout=1)
+            conn = sqlite3.connect(db_file_name, timeout=1)
             cursor = conn.cursor()
             if not options:
-                returnStr = list(cursor.execute(command))
+                return_string = list(cursor.execute(command))
             else:
-                returnStr = list(cursor.execute(command, options))
+                return_string = list(cursor.execute(command, options))
             conn.commit()
             cursor.close()
             conn.close()
-            return returnStr[0] if short and len(returnStr) == 1 else returnStr
+            return return_string[0] if short and len(return_string) == 1 else return_string
         except sqlite3.OperationalError as e:
-            create_log(e, code="error")
+            Log.error(e)
             sleep(1)
             continue
 
 
-def get_profile_info(person: int):
-    if not database("SELECT * FROM profile WHERE name = ?", person):
-        database("INSERT INTO profile values (?, ?, ?, ?)", person, None, None, 0)
-    return database("SELECT * FROM profile WHERE name = ?", person)
+def get_profile_info(user: int):
+    if not database("SELECT * FROM profile WHERE name = ?", user):
+        database("INSERT INTO profile values (?, ?, ?, ?)", user, None, None, 0)
+    return database("SELECT * FROM profile WHERE name = ?", user)
 
 
 def get_guild_settings(guild: int):
@@ -93,7 +99,7 @@ class Log:
             Log.error(e, logged=False)
 
     @staticmethod
-    def __to_txt(output):  # sourcery skip: instance-method-first-arg-name
+    def __to_txt(output):
         with open(f"logs/log_{datetime.date.today()}.txt", "a", encoding="UTF-8") as file:
             file.write("\n" + output)
 

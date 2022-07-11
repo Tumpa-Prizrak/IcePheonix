@@ -1,8 +1,8 @@
-import discord, datetime
+import discord
 from discord.abc import GuildChannel
 from discord.ext import commands
 
-import helper as help
+import helper as h
 
 
 class Events(commands.Cog):
@@ -12,7 +12,7 @@ class Events(commands.Cog):
 
     @commands.Cog.listener()
     async def on_member_join(self, member: discord.Member):
-        settings = help.get_guild_settings(member.guild.id)
+        settings = h.get_guild_settings(member.guild.id)
         if settings[1] is None:
             return
         emb = discord.Embed(title=f"{member} присоеденился", color=discord.Color.green())
@@ -21,7 +21,7 @@ class Events(commands.Cog):
 
     @commands.Cog.listener()
     async def on_member_remove(self, member: discord.Member):
-        settings = help.get_guild_settings(member.guild.id)
+        settings = h.get_guild_settings(member.guild.id)
         if settings[1] is None:
             return
         emb = discord.Embed(title=f"{member} вышел", color=discord.Color.red())
@@ -30,7 +30,7 @@ class Events(commands.Cog):
 
     @commands.Cog.listener()
     async def on_message_delete(self, message: discord.Message):
-        settings = help.get_guild_settings(message.guild.id)
+        settings = h.get_guild_settings(message.guild.id)
         if settings[2] is None:
             return
         emb = discord.Embed(description="Сообщение было удалено", color=discord.Color.red())
@@ -43,7 +43,7 @@ class Events(commands.Cog):
 
     @commands.Cog.listener()
     async def on_message_edit(self, before: discord.Message, after: discord.Message):
-        settings = help.get_guild_settings(before.guild.id)
+        settings = h.get_guild_settings(before.guild.id)
         if settings[2] is None:
             return
         emb = discord.Embed(description="Сообщение было удалено", color=discord.Color.blue())
@@ -57,7 +57,7 @@ class Events(commands.Cog):
 
     @commands.Cog.listener()
     async def on_guild_channel_delete(self, channel: GuildChannel):
-        settings = help.get_guild_settings(channel.guild.id)
+        settings = h.get_guild_settings(channel.guild.id)
         if settings[2] is None:
             return
         await self.client.get_channel(settings[2]).send("on_guild_channel_delete")
@@ -65,7 +65,7 @@ class Events(commands.Cog):
 
     @commands.Cog.listener()
     async def on_guild_channel_create(self, channel: GuildChannel):
-        settings = help.get_guild_settings(channel.guild.id)
+        settings = h.get_guild_settings(channel.guild.id)
         if settings[2] is None:
             return
         emb = discord.Embed(description="Был создан новый канал", color=discord.Color.purple())
@@ -76,7 +76,7 @@ class Events(commands.Cog):
 
     @commands.Cog.listener()
     async def on_guild_channel_update(self, before: GuildChannel, after: GuildChannel):
-        settings = help.get_guild_settings(before.guild.id)
+        settings = h.get_guild_settings(before.guild.id)
         if settings[2] is None:
             return
         if before.name != after.name:
@@ -106,7 +106,7 @@ class Events(commands.Cog):
 
     @commands.Cog.listener()
     async def on_member_update(self, before: discord.Member, after: discord.Member):
-        settings = help.get_guild_settings(before.guild.id)
+        settings = h.get_guild_settings(before.guild.id)
         if settings[2] is None:
             return
         await self.client.get_channel(settings[2]).send("on_member_update")
@@ -115,7 +115,7 @@ class Events(commands.Cog):
 
     @commands.Cog.listener()
     async def on_guild_role_create(self, role: discord.Role):
-        settings = help.get_guild_settings(role.guild.id)
+        settings = h.get_guild_settings(role.guild.id)
         if settings[2] is None:
             return
         await self.client.get_channel(settings[2]).send("on_guild_role_create")
@@ -123,7 +123,7 @@ class Events(commands.Cog):
 
     @commands.Cog.listener()
     async def on_guild_role_delete(self, role: discord.Role):
-        settings = help.get_guild_settings(role.guild.id)
+        settings = h.get_guild_settings(role.guild.id)
         if settings[2] is None:
             return
         await self.client.get_channel(settings[2]).send("on_guild_role_delete")
@@ -131,7 +131,7 @@ class Events(commands.Cog):
 
     @commands.Cog.listener()
     async def on_guild_role_update(self, before: discord.Role, after: discord.Role):
-        settings = help.get_guild_settings(before.guild.id)
+        settings = h.get_guild_settings(before.guild.id)
         if settings[2] is None:
             return
         await self.client.get_channel(settings[2]).send("on_guild_role_update")
@@ -140,7 +140,7 @@ class Events(commands.Cog):
 
     @commands.Cog.listener()
     async def on_guild_emojis_update(self, guild: discord.Guild, before: discord.Emoji, after: discord.Emoji):
-        settings = help.get_guild_settings(guild.id)
+        settings = h.get_guild_settings(guild.id)
         if settings[2] is None:
             return
         await self.client.get_channel(settings[2]).send("on_guild_emojis_update")
@@ -149,7 +149,7 @@ class Events(commands.Cog):
 
     @commands.Cog.listener()
     async def on_member_ban(self, guild: discord.Guild, user: discord.User):
-        settings = help.get_guild_settings(guild.id)
+        settings = h.get_guild_settings(guild.id)
         if settings[2] is None:
             return
         await self.client.get_channel(settings[2]).send("on_member_ban")
@@ -157,7 +157,7 @@ class Events(commands.Cog):
 
     @commands.Cog.listener()
     async def on_member_unban(self, guild: discord.Guild, user: discord.User):
-        settings = help.get_guild_settings(guild.id)
+        settings = h.get_guild_settings(guild.id)
         if settings[2] is None:
             return
         await self.client.get_channel(settings[2]).send("on_member_unban")
@@ -165,7 +165,7 @@ class Events(commands.Cog):
 
     @commands.Cog.listener()
     async def on_invite_create(self, invite: discord.Invite):
-        settings = help.get_guild_settings(invite.guild.id)
+        settings = h.get_guild_settings(invite.guild.id)
         if settings[2] is None:
             return
         await self.client.get_channel(settings[2]).send("on_invite_create")
@@ -173,7 +173,7 @@ class Events(commands.Cog):
 
     @commands.Cog.listener()
     async def on_invite_delete(self, invite: discord.Invite):
-        settings = help.get_guild_settings(invite.guild.id)
+        settings = h.get_guild_settings(invite.guild.id)
         if settings[2] is None:
             return
         await self.client.get_channel(settings[2]).send("on_invite_delete")
