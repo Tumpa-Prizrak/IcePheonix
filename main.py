@@ -24,10 +24,11 @@ bot = commands.Bot(
     intents=discord.Intents.all(),
     case_insensitive=True
 )
+bot.remove_command("help")
 
 # Load Cogs
 for i in os.listdir("Cogs/"):
-    with contextlib.supress(NoEntryPointError):
+    with contextlib.suppress(NoEntryPointError):
         if i.endswith(".py"):
             bot.load_extension(f"Cogs.{i[:-3]}")
             h.Log.info(f"Load cog: Cogs.{i[:-3]}")

@@ -40,16 +40,16 @@ class OtherCommand(commands.Cog):
     @commands.command(usage='profile', brief='Показывает ваш профиль')
     async def profile(self, ctx: commands.Context, person: discord.Member = None):
         await ctx.message.delete()
-        if person == None:
+        if person is None:
             person = ctx.author
-        info = help.get_profile_info(person)
+        info = help.get_profile_info(person.id)
         help.Log.debug(info)
         emb = discord.Embed(title="Ваш профиль" if person is None else f"Профиль {person.display_name}",
                             color=person.top_role.colour)
         emb.set_author(name=str(person))
         emb.set_thumbnail(url=person.avatar_url)
         emb.add_field(name=f"Статус", value=str(person.status), inline=False)
-        emb.add_field(name=f"Активность", value=str(person.activity), inline=False)
+        emb.add_field(name=f"Активность", value=str(person.activity), inline=False)  # FIXME activitys
         emb.add_field(name="Обо мне", value=info[1] if info[1] is not None else "*Ничего не сказано*")
         emb.add_field(name=f"ID", value=str(person.id), inline=False)
         emb.add_field(name="Дата регистрации",
@@ -70,11 +70,11 @@ class OtherCommand(commands.Cog):
     async def set(self, ctx: commands.Context, colum: str, *, val: str = None):
         await ctx.message.delete()
         if colum in ('about', 'a'):
-            help.do_to_database("UPDATE profile SET about=? WHERE name=?", val, ctx.author.id)
+            help.database("UPDATE profile SET about=? WHERE name=?", val, ctx.author.id)
             await ctx.send(f"Значение \"Обо мне\" изменено на {val}" if val is not None else "Значение",
                         delete_after=help.json_data['delete_after']['command'])
         elif colum in ('picture', 'pic', 'p'):
-            help.do_to_database("UPDATE profile SET pic=? WHERE name=?", val, ctx.author.id)
+            help.database("UPDATE profile SET pic=? WHERE name=?", val, ctx.author.id)
             await ctx.send("Картинка изменена", delete_after=help.json_data['delete_after']['command'])
         else:
             await ctx.send('Неправильный аттрибут. Возможные значения: info | picture',

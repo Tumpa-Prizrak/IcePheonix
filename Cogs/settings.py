@@ -14,10 +14,10 @@ class Settings(commands.Cog):
     async def greetings(self, ctx: commands.Context, channel: discord.TextChannel = None):
         help.get_guild_settings(ctx.guild.id)
         if channel is None:
-            help.do_to_database("UPDATE server_settings SET hello_channel_id=? WHERE guild_id=?", None, ctx.guild.id)
+            help.database("UPDATE server_settings SET hello_channel_id=? WHERE guild_id=?", None, ctx.guild.id)
             await ctx.send(f"Канал для приветсвий сброшен", delete_after=help.json_data['delete_after']['command'])
         else:
-            help.do_to_database("UPDATE server_settings SET hello_channel_id=? WHERE guild_id=?", channel.id, ctx.guild.id)
+            help.database("UPDATE server_settings SET hello_channel_id=? WHERE guild_id=?", channel.id, ctx.guild.id)
             await ctx.send(f"Канал для приветсвий установлен на {channel.mention}",
                         delete_after=help.json_data['delete_after']['command'])
 

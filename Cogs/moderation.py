@@ -72,7 +72,7 @@ class ModerationCommand(commands.Cog):
                                 'командой  warns. Требуется право manage_roles(управлять ролями) у вызвавшего '
                                 'команду.')
     @commands.has_permissions(manage_roles=True)
-    async def warn(self, ctx: commands.Context, user: discord.Member, *, reason: str):
+    async def warn(self, ctx: commands.Context, user: discord.Member, *, reason: str = "без причины"):
         await ctx.message.delete()
         help.database("INSERT INTO warns (person, server, warn, moderator) VALUES (?, ?, ?, ?)", user.id, ctx.guild.id,
                       reason, ctx.author.id)
@@ -90,7 +90,7 @@ class ModerationCommand(commands.Cog):
             emb.description = "*Пусто*"
         else:
             emb.description = "\n".join(map(lambda x: f"#{x[0]}: {self.client.get_user(x[4]).mention if self.client.get_user(x[4]) is not None else 'Неизвестно'} - {x[3]}",
-                                            man_warns))
+                                            user_warns))
             emb.set_footer(text="#Номер нарушения: модератор - Причина")
         await ctx.send(embed=emb)
     
