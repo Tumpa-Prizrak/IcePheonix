@@ -1,62 +1,14 @@
 # TODO CherryFox, Вы сделали что-то великое! В награду, я даю тебе эту клубнику!
-
-import asyncio
-import contextlib
-import datetime
-import os
-import random
-import sys
 import time
-from colorama import Fore, Style
 
 import aeval
 import aiohttp
 import discord
-import requests
-from discord.ext import commands, tasks
 
 import helper as h
 
 
-class MyBot(commands.Bot):
-    def __init__(self, *, intents: discord.Intents):
-        super().__init__(
-            application_id=h.json_data["application_id"],
-            intents=intents,
-            command_prefix=commands.when_mentioned_or(h.json_data['prefix']),
-            case_insensitive=True,
-            # strip_after_prefix=True,
-            # owner_ids=JSON_DATA["owners"],
-        )
-
-    async def setup_hook(self):
-        for cog in os.listdir("Cogs"):
-            with contextlib.suppress(commands.errors.NoEntryPointError):
-                if cog.endswith(".py"):
-                    try:
-                        await bot.load_extension(f"Cogs.{cog[:-3]}")
-                        h.Log.info(f"Load cog: Cogs.{cog[:-3]}")
-                    except Exception as e:
-                        h.Log.error(f"cog Cogs.{cog[:-3]} failed to load due to error: {e}.")
-
-
-bot = MyBot(intents=discord.Intents.all())
-
-bot.remove_command("help")
-
-
-@bot.event
-async def on_ready():
-    await bot.change_presence(
-        activity=discord.Streaming(
-            name="!help",
-            platform="Twitch",
-            details=f"{h.json_data['prefix']}help",
-            game="Creating a bot",
-            url="https://www.twitch.tv/andrew_k9"
-        )
-    )
-    h.Log.log(f"Logged in as {bot.user}(ID: {bot.user.id})", code="ready", color=Fore.MAGENTA, style=Style.BRIGHT)
+bot = h.MyBot(debug=True, help_cog_file="other.py")
 
 
 def minify_text(text):
@@ -81,18 +33,8 @@ async def __eval(ctx, *, content):
     code = "\n".join(content.split("\n")[1:])[:-3] if content.startswith("```") and content.endswith("```") else content
     standard_args = {
         "discord": discord,
-        "commands": commands,
         "bot": bot,
-        "tasks": tasks,
-        "ctx": ctx,
-        "asyncio": asyncio,
-        "aiohttp": aiohttp,
-        "os": os,
-        'sys': sys,
-        "time": time,
-        "datetime": datetime,
-        "random": random,
-        "requests": requests
+        "ctx": ctx
     }
     start = time.time()  # import time, для расчёта времени выполнения
     try:
