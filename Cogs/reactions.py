@@ -39,11 +39,11 @@ class ReactionsCommand(commands.Cog):
                 return r.status
 
     @staticmethod
-    async def build_embed(reaction, author, action, words, target=None):
+    async def build_embed(reaction, author, action, words, target=None, err="Вы не можете сделать это с собой :sob:"):
         if target is not None:
             if author == target:
                 return discord.Embed(
-                    title="Вы не можете сделать это с собой :sob:",
+                    title=err,
                     colour=discord.colour.Colour.red()
                 )
         if not isinstance(reaction, int):
@@ -64,7 +64,7 @@ class ReactionsCommand(commands.Cog):
     async def baka(self, ctx, person: typing.Union[discord.Member, str], *, words: str = None):
         await ctx.message.delete()
         reaction = await self.get_gif('anime baka')
-        emb = await self.build_embed(reaction, ctx.author, 'ругает', words, person)
+        emb = await self.build_embed(reaction, ctx.author, 'ругает', words, person, "Вы отругали себя. Вы садитесь в угол и начинаете плакать")
         await ctx.send(embed=emb)
 
     @commands.command(usage='bangHead', brief='Долбиться головой об стену')
@@ -78,7 +78,7 @@ class ReactionsCommand(commands.Cog):
     async def bite(self, ctx, person: typing.Union[discord.Member, str], *, words: str = None):
         await ctx.message.delete()
         reaction = await self.get_gif('anime bite')
-        emb = await self.build_embed(reaction, ctx.author, 'укусил(а)', words, person)
+        emb = await self.build_embed(reaction, ctx.author, 'укусил(а)', words, person, "Вы кусаете себя, вам больно")
         await ctx.send(embed=emb)
 
     @commands.command(usage='blush', brief='Покраснеть')
@@ -99,7 +99,7 @@ class ReactionsCommand(commands.Cog):
     async def cuddle(self, ctx, person: typing.Union[discord.Member, str], *, words: str = None):
         await ctx.message.delete()
         reaction = await self.get_gif('anime cuddle')
-        emb = await self.build_embed(reaction, ctx.author, 'прижался(ась) к', words, person)
+        emb = await self.build_embed(reaction, ctx.author, 'прижался(ась) к', words, person, "Вы пытаетесь прижаться к самому/самой себею. Вы ломаете себе плечи")
         await ctx.send(embed=emb)
 
     @commands.command(usage='dance [Человек]', brief='Потанцевать с кем-то или в одиночку')
@@ -120,14 +120,14 @@ class ReactionsCommand(commands.Cog):
     async def feed(self, ctx, person: typing.Union[discord.Member, str], *, words: str = None):
         await ctx.message.delete()
         reaction = await self.get_gif('anime feed')
-        emb = await self.build_embed(reaction, ctx.author, 'покормил(а)', words, person)
+        emb = await self.build_embed(reaction, ctx.author, 'покормил(а)', words, person, "Что вы делаете в моём холодильнике? Вы что хотите кушать?")
         await ctx.send(embed=emb)
 
     @commands.command(usage='five <Человек>', brief='Пятюню? Дать "пять" кому-то')
     async def five(self, ctx, person: typing.Union[discord.Member, str], *, words: str = None):
         await ctx.message.delete()
         reaction = await self.get_gif('anime high five')
-        emb = await self.build_embed(reaction, ctx.author, 'дал(а) пять', words, person)
+        emb = await self.build_embed(reaction, ctx.author, 'дал(а) пять', words, person, "Вы хлопаете в ладоши")
         await ctx.send(embed=emb)
 
     @commands.command(usage='flip', brief='Перевернуть стол... Стоп, а ПК?!')
@@ -148,7 +148,7 @@ class ReactionsCommand(commands.Cog):
     async def hug(self, ctx, person: typing.Union[discord.Member, str], *, words: str = None):
         await ctx.message.delete()
         reaction = await self.get_gif('anime hug')
-        emb = await self.build_embed(reaction, ctx.author, 'обнял(а)', words, person)
+        emb = await self.build_embed(reaction, ctx.author, 'обнял(а)', words, person, "Вы обнялись со своей шизой")
         await ctx.send(embed=emb)
 
     @commands.command(usage='innocent', brief='Я точно не импостер, не, ну серьёзно :D')  # Брон молодец
@@ -162,49 +162,49 @@ class ReactionsCommand(commands.Cog):
     async def kill(self, ctx, person: typing.Union[discord.Member, str], *, words: str = None):
         await ctx.message.delete()
         reaction = await self.get_gif('anime kill')
-        emb = await self.build_embed(reaction, ctx.author, 'убил(а)', words, person)
+        emb = await self.build_embed(reaction, ctx.author, 'убил(а)', words, person, "Суицид - не выход! Осуждаю!")
         await ctx.send(embed=emb)
 
     @commands.command(usage='kiss <Человек>', brief='Поцелуемся с кем-то? \*чмок*')  # \* чтобы не выделялось курсивом
     async def kiss(self, ctx, person: typing.Union[discord.Member, str], *, words: str = None):
         await ctx.message.delete()
         reaction = await self.get_gif('anime kiss')
-        emb = await self.build_embed(reaction, ctx.author, 'поцеловал(а)', words, person)
+        emb = await self.build_embed(reaction, ctx.author, 'поцеловал(а)', words, person, "Вы целуетесь с зеркалом, но вас палит ваша мама")
         await ctx.send(embed=emb)
 
     @commands.command(usage='lick <Человек>', brief='Лизни кого-то)')
     async def lick(self, ctx, person: typing.Union[discord.Member, str], *, words: str = None):
         await ctx.message.delete()
         reaction = await self.get_gif('anime lick')
-        emb = await self.build_embed(reaction, ctx.author, 'лизнул(а)', words, person)
+        emb = await self.build_embed(reaction, ctx.author, 'лизнул(а)', words, person, "Вы попытались дотянутся языком до кончика носа. У вас ожидаемо не получается")
         await ctx.send(embed=emb)
 
     @commands.command(usage='pat <Человек>', brief='Кто тут у нас хороший? А ну иди сюда, поглажу :)')
     async def pat(self, ctx, person: typing.Union[discord.Member, str], *, words: str = None):
         await ctx.message.delete()
         reaction = await self.get_gif('anime pat')
-        emb = await self.build_embed(reaction, ctx.author, 'погладил(а)', words, person)
+        emb = await self.build_embed(reaction, ctx.author, 'погладил(а)', words, person, "<Квина, сделай плиз>")
         await ctx.send(embed=emb)
 
     @commands.command(usage='poke <Человек>', brief='Тыкнуть в кого-то')
     async def poke(self, ctx, person: typing.Union[discord.Member, str], *, words: str = None):
         await ctx.message.delete()
         reaction = await self.get_gif('anime poke')
-        emb = await self.build_embed(reaction, ctx.author, 'тыкнул(а) в', words, person)
+        emb = await self.build_embed(reaction, ctx.author, 'тыкнул(а) в', words, person, "Вы тыкаете себя в щёку. Вам не больно")
         await ctx.send(embed=emb)
 
     @commands.command(usage='scare <Человек>', brief='Бу! Напугать кого-то')
     async def scare(self, ctx, person: typing.Union[discord.Member, str], *, words: str = None):
         await ctx.message.delete()
         reaction = await self.get_gif('anime scare')
-        emb = await self.build_embed(reaction, ctx.author, 'испугал(а)', words, person)
+        emb = await self.build_embed(reaction, ctx.author, 'испугал(а)', words, person, "Вы испугали сами себя и получили инфаркт")
         await ctx.send(embed=emb)
 
     @commands.command(usage='slap <Человек>', brief='Дать подщёчину кому-то')
     async def slap(self, ctx, person: typing.Union[discord.Member, str], *, words: str = None):
         await ctx.message.delete()
         reaction = await self.get_gif('anime slap')
-        emb = await self.build_embed(reaction, ctx.author, 'дал(а) подщёчину', words, person)
+        emb = await self.build_embed(reaction, ctx.author, 'дал(а) подщёчину', words, person, "<Квина, сделай плиз>")
         await ctx.send(embed=emb)
 
     @commands.command(usage='sleep', brief='Поспать. Спокойной ночи 💤')
@@ -217,17 +217,17 @@ class ReactionsCommand(commands.Cog):
     async def spank(self, ctx, person: typing.Union[discord.Member, str], *, words: str = None):
         await ctx.message.delete()
         reaction = await self.get_gif('anime spank')
-        emb = await self.build_embed(reaction, ctx.author, 'ударил(а)', words, person)
+        emb = await self.build_embed(reaction, ctx.author, 'ударил(а)', words, person, "<Квина, сделай плиз>")
         await ctx.send(embed=emb)
 
     @commands.command(usage='tickle <Человек>', brief='Пощекотать кого-то')
     async def tickle(self, ctx, person: typing.Union[discord.Member, str], *, words: str = None):
         await ctx.message.delete()
         reaction = await self.get_gif('anime tickle')
-        emb = await self.build_embed(reaction, ctx.author, 'пощекотал(а)', words, person)
+        emb = await self.build_embed(reaction, ctx.author, 'пощекотал(а)', words, person, "<Квина, сделай плиз>")
         await ctx.send(embed=emb)
 
-    @commands.command(usage='walk <Человек>', brief='Ходить, гулять, бродить')
+    @commands.command(usage='walk [Человек]', brief='Ходить, гулять, бродить')
     async def walk(self, ctx, person: typing.Union[discord.Member, str] = None, *, words: str = None):
         await ctx.message.delete()
         reaction = await self.get_gif('anime walk')
