@@ -1,7 +1,7 @@
 # TODO CherryFox, Вы сделали что-то великое! В награду, я даю тебе эту клубнику!
 import time
 
-import aeval
+from aeval import aeval
 import aiohttp
 import discord
 
@@ -36,10 +36,10 @@ async def __eval(ctx, *, content):
         "bot": bot,
         "ctx": ctx
     }
-    start = time.time()  # import time, для расчёта времени выполнения
+    start = time.perf_counter()  # import time, для расчёта времени выполнения
     try:
-        r = await aeval.aeval(f"""{code}""", standard_args, {})  # выполняем код
-        ended = time.time() - start  # рассчитываем конец выполнения
+        r = await aeval(f"""{code}""", standard_args, {})  # выполняем код
+        ended = time.perf_counter() - start  # рассчитываем конец выполнения
         if not code.startswith('#nooutput'):
             # Если код начинается с #nooutput, то вывода не будет
             embed = discord.Embed(title="Успешно!", description=f"Выполнено за: {ended}", color=0x99ff99)
